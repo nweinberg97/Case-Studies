@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nitai Weinberg · Case Studies</title>
+<meta name="description" content="Case studies by Nitai Weinberg: Sedi, NomNoms, Let Her Cook, Coded and Drift. How I frame problems, make trade-offs and ship.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800;900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: an editorial portfolio. A dot field that rebuilds into each product's logo is the one signature move: it cycles in the hero and follows you through Selected Work. Everything else is quiet: one reading column, generous space, a single persimmon accent. */
+:root {
+  --bg: #F7F7F4; --surface: #FFFFFF; --ink: #121314; --muted: #5D605C; --faint: #8B8E89; --line: #E2E2DC; --soft: #EEEEE9;
+  --accent: #E8552B; --accent-soft: #FBE6DE;
+  --todo: #8A6A1F; --todo-bg: #FBF5E6;
+  --display: "Schibsted Grotesk", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Geist", "Helvetica Neue", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F1011; --surface: #17181A; --ink: #EEEEEA; --muted: #A2A5A0; --faint: #74776F; --line: #26282A; --soft: #1D1F21;
+  --accent: #FF7A4F; --accent-soft: #3A2017; --todo: #E2C27A; --todo-bg: #221D12; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0F1011; --surface: #17181A; --ink: #EEEEEA; --muted: #A2A5A0; --faint: #74776F; --line: #26282A; --soft: #1D1F21;
+  --accent: #FF7A4F; --accent-soft: #3A2017; --todo: #E2C27A; --todo-bg: #221D12; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.65 var(--body); -webkit-font-smoothing: antialiased;
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 1180px; margin: 0 auto; }
+h1, h2, h3, h4 { font-family: var(--display); margin: 0; letter-spacing: -0.03em; text-wrap: balance; font-weight: 800; }
+p { margin: 0; }
+a { color: inherit; text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+img { display: block; max-width: 100%; height: auto; }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.muted { color: var(--muted); }
+.btn { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font: 600 15px var(--body); padding: 11px 18px; border-radius: 999px; background: var(--ink); color: var(--bg); transition: transform .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.small { padding: 7px 12px; font-size: 13px; }
+.todo { border: 1px dashed var(--todo); background: var(--todo-bg); color: var(--todo); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+.todo b { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; display: block; }
+
+.preview-bar { font: 500 12px var(--mono); text-align: center; padding: 7px 16px; background: var(--ink); color: var(--bg);
+  margin-left: calc(-1 * max(20px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(20px, env(safe-area-inset-right, 0px))); }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  margin-left: calc(-1 * max(20px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(20px, env(safe-area-inset-right, 0px)));
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav .in { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 16px var(--display); letter-spacing: -0.01em; }
+.brand i { width: 22px; height: 22px; border-radius: 7px; background: var(--ink); display: grid; place-items: center; }
+.brand i::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.nav nav { display: flex; align-items: center; gap: 2px; }
+.nav nav a { font: 500 14px var(--body); text-decoration: none; padding: 7px 11px; border-radius: 999px; color: var(--muted); }
+.nav nav a:hover { color: var(--ink); background: var(--soft); }
+@media (max-width: 640px) { .nav nav a.opt { display: none; } }
+.icon-btn { all: unset; box-sizing: border-box; cursor: pointer; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 999px; color: var(--muted); }
+.icon-btn:hover { background: var(--soft); color: var(--ink); }
+.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn .moon { display: none; }
+:root[data-theme="dark"] .icon-btn .sun { display: none; }
+:root[data-theme="dark"] .icon-btn .moon { display: block; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: center; padding-block: 56px 40px; }
+.hero > * { min-width: 0; }
+.hero h1 { font-size: clamp(42px, 6.4vw, 86px); line-height: .96; letter-spacing: -0.05em; font-weight: 900; }
+.hero h1 .soft { color: var(--faint); }
+.hero .lede { font-size: clamp(18px, 1.6vw, 20px); color: var(--muted); max-width: 40ch; margin-top: 22px; }
+.hero .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+.dotstage { position: relative; aspect-ratio: 1 / 1; max-width: 100%; }
+.dotstage canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.now { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); display: flex; gap: 6px; align-items: center; font: 500 12px var(--mono); color: var(--muted); white-space: nowrap; }
+.now b { color: var(--ink); font-weight: 500; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 32px; } .dotstage { max-width: 420px; width: 100%; margin: 0 auto; } }
+
+.proof { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.proof div { padding: 20px 18px 20px 0; display: grid; gap: 2px; }
+.proof div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+.proof b { font: 800 clamp(26px, 3vw, 34px)/1 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.proof span { font-size: 14px; color: var(--muted); }
+@media (max-width: 760px) { .proof { grid-template-columns: 1fr 1fr; } .proof div:nth-child(3) { padding-left: 0; border-left: 0; } .proof div:nth-child(n+3) { border-top: 1px solid var(--line); } }
+
+/* sections */
+section { padding-block: 96px 0; }
+.sec-head { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: end; margin-bottom: 40px; }
+.sec-head h2 { font-size: clamp(32px, 4.2vw, 54px); line-height: 1; }
+.sec-head p { color: var(--muted); max-width: 52ch; }
+@media (max-width: 760px) { .sec-head { grid-template-columns: 1fr; gap: 12px; } }
+
+/* work: sticky dots + case list */
+.work { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 48px; align-items: start; }
+.work > * { min-width: 0; }
+.work-stick { position: sticky; top: 92px; display: grid; gap: 14px; }
+.work-stick .dotstage { border-radius: 24px; background: var(--surface); border: 1px solid var(--line); }
+.work-stick .meta { display: flex; justify-content: space-between; gap: 10px; font: 500 12px var(--mono); color: var(--muted); }
+.cases { display: grid; gap: 28px; }
+.case { display: grid; gap: 18px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+.case:last-child { border-bottom: 0; }
+.case .shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--soft); aspect-ratio: 16 / 10; max-width: 100%; }
+.case .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+.case:hover .shot img { transform: scale(1.02); }
+.case .top { display: flex; gap: 12px; align-items: center; }
+.case .top img { width: 40px; height: 40px; border-radius: 10px; }
+.case h3 { font-size: clamp(28px, 3vw, 38px); line-height: 1; }
+.case .tag { margin-left: auto; font: 500 12px var(--mono); color: var(--muted); padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+.case .pitch { font-size: 20px; line-height: 1.4; letter-spacing: -0.01em; max-width: 34ch; }
+.case dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
+.case dt { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.case dd { margin: 2px 0 0; font-size: 15px; }
+@media (max-width: 520px) { .case dl { grid-template-columns: 1fr 1fr; } }
+.case .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 860px) { .work { grid-template-columns: 1fr; } .work-stick { display: none; } }
+
+/* approach */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+.step { all: unset; box-sizing: border-box; cursor: pointer; padding: 20px 18px 22px 0; display: grid; gap: 8px; align-content: start; border-top: 2px solid transparent; margin-top: -1px; }
+.step + .step { padding-left: 18px; }
+.step .n { font: 500 12px var(--mono); color: var(--faint); }
+.step h4 { font-size: 22px; letter-spacing: -0.02em; }
+.step p { font-size: 15px; color: var(--muted); }
+.step[aria-selected="true"] { border-top-color: var(--accent); }
+.step[aria-selected="true"] .n { color: var(--accent); }
+.step-detail { margin-top: 18px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; align-items: center; padding: 22px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); }
+.step-detail > * { min-width: 0; }
+.step-detail .shot { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 10; max-width: 100%; }
+.step-detail .shot img { width: 100%; height: 100%; object-fit: cover; }
+.step-detail h4 { font-size: 24px; }
+.step-detail p { color: var(--muted); margin-top: 10px; }
+.step-detail .ex { font: 500 12px var(--mono); color: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } .step:nth-child(3) { padding-left: 0; } .step-detail { grid-template-columns: 1fr; } }
+
+/* principles */
+.princ { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 960px) { .princ { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .princ { grid-template-columns: 1fr; } }
+.pr { all: unset; box-sizing: border-box; cursor: pointer; display: grid; min-height: 200px; border-radius: 18px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+.pr > span { grid-area: 1 / 1; padding: 20px; display: flex; flex-direction: column; gap: 8px; transition: opacity .3s, transform .35s cubic-bezier(.2,.8,.2,1); }
+.pr .b { opacity: 0; transform: translateY(10px); background: var(--ink); color: var(--bg); }
+.pr[aria-expanded="true"] .f { opacity: 0; transform: translateY(-10px); }
+.pr[aria-expanded="true"] .b { opacity: 1; transform: none; }
+.pr h4 { font-size: 21px; letter-spacing: -0.02em; }
+.pr p { font-size: 15px; color: var(--muted); }
+.pr .b p { color: inherit; opacity: .85; }
+.pr small { margin-top: auto; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.pr .b small { color: inherit; opacity: .55; }
+.pr .ix { font: 500 12px var(--mono); color: var(--accent); }
+
+/* index */
+.index { border-top: 1px solid var(--line); position: relative; }
+.row { display: grid; grid-template-columns: 34px 1.1fr 2fr auto; gap: 16px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s, padding .2s; }
+.row:hover { background: var(--surface); padding-inline: 12px; }
+.row img { width: 30px; height: 30px; border-radius: 8px; }
+.row b { font: 700 18px var(--display); letter-spacing: -0.01em; }
+.row span { color: var(--muted); font-size: 15px; }
+.row em { font: 500 12px var(--mono); font-style: normal; color: var(--faint); white-space: nowrap; }
+@media (max-width: 700px) { .row { grid-template-columns: 30px 1fr auto; } .row span { grid-column: 2 / 4; grid-row: 2; font-size: 14px; } }
+.peek { position: fixed; z-index: 4; width: 300px; aspect-ratio: 16 / 10; max-width: 60vw; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 24px 60px -24px rgba(0,0,0,.45); pointer-events: none; opacity: 0; transform: scale(.94); transition: opacity .2s, transform .2s; }
+.peek.on { opacity: 1; transform: none; }
+.peek img { width: 100%; height: 100%; object-fit: cover; }
+@media (hover: none) { .peek { display: none; } }
+
+/* beyond + about */
+.beyond { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.beyond div { padding: 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
+.beyond b { font: 700 19px var(--display); letter-spacing: -0.01em; }
+.beyond p { font-size: 15px; color: var(--muted); }
+@media (max-width: 960px) { .beyond { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .beyond { grid-template-columns: 1fr; } }
+.about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: start; }
+.about > * { min-width: 0; }
+.about .quote { font: 800 clamp(28px, 3.6vw, 46px)/1.05 var(--display); letter-spacing: -0.035em; }
+.about .quote span { color: var(--accent); }
+.about .body { display: grid; gap: 16px; color: var(--muted); font-size: 18px; }
+.about .body strong { color: var(--ink); font-weight: 600; }
+.kv { display: grid; gap: 0; margin-top: 8px; border-top: 1px solid var(--line); }
+.kv div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--ink); }
+.kv div span:first-child { font: 500 12px var(--mono); color: var(--faint); letter-spacing: .06em; text-transform: uppercase; }
+.kv div span:last-child { text-align: right; }
+@media (max-width: 860px) { .about { grid-template-columns: 1fr; gap: 24px; } }
+.contact { margin-block: 96px 40px; padding: clamp(28px, 5vw, 56px); border-radius: 28px; background: var(--ink); color: var(--bg); display: grid; gap: 20px; }
+.contact h2 { font-size: clamp(36px, 5.4vw, 72px); line-height: .98; letter-spacing: -0.045em; }
+.contact .row2 { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.contact .btn { background: var(--bg); color: var(--ink); }
+.contact .btn.ghost { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 30%, transparent); }
+.contact .todo { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 40%, transparent); }
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-block: 8px 40px; font: 500 12px var(--mono); color: var(--faint); }
+
+/* reader */
+.reader { position: fixed; inset: 0; z-index: 20; background: var(--bg); overflow: auto; overscroll-behavior: contain;
+  padding: env(safe-area-inset-top, 0px) max(20px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(20px, env(safe-area-inset-left, 0px)); animation: rin .4s cubic-bezier(.2,.8,.2,1); }
+@keyframes rin { from { opacity: 0; transform: translateY(24px); } }
+.reader .bar { position: sticky; top: 0; z-index: 2; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  margin-inline: calc(-1 * max(20px, env(safe-area-inset-left, 0px))); padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.reader .bar .in { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding-block: 12px; }
+.reader .bar img { width: 26px; height: 26px; border-radius: 7px; }
+.reader .bar b { font: 700 16px var(--display); }
+.reader .chap { display: flex; gap: 2px; margin-left: 12px; overflow-x: auto; scrollbar-width: none; }
+.reader .chap a { font: 500 13px var(--body); color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.reader .chap a:hover { background: var(--soft); color: var(--ink); }
+.reader .close { margin-left: auto; }
+@media (max-width: 700px) { .reader .chap { display: none; } }
+.rbody { max-width: 1080px; margin: 0 auto; padding-block: 48px 96px; display: grid; gap: 56px; }
+.rhead { display: grid; gap: 18px; }
+.rhead h1 { font-size: clamp(40px, 6vw, 80px); line-height: .96; letter-spacing: -0.05em; font-weight: 900; max-width: 16ch; }
+.rhead .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+.rhead .facts div { padding: 14px 14px 0 0; }
+.rhead .facts div + div { padding-left: 14px; border-left: 1px solid var(--line); }
+.rhead .facts span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); display: block; }
+@media (max-width: 700px) { .rhead .facts { grid-template-columns: 1fr 1fr; } .rhead .facts div:nth-child(3) { padding-left: 0; border-left: 0; } }
+.rsec { display: grid; grid-template-columns: 220px 1fr; gap: 32px; scroll-margin-top: 80px; }
+.rsec > * { min-width: 0; }
+.rsec > .eyebrow { padding-top: 6px; }
+.rsec .txt { display: grid; gap: 16px; max-width: 64ch; }
+.rsec .txt p { font-size: 18px; }
+.rsec h3 { font-size: clamp(24px, 2.6vw, 32px); line-height: 1.1; }
+@media (max-width: 760px) { .rsec { grid-template-columns: 1fr; gap: 10px; } }
+.rfig { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--soft); }
+.rfig img { width: 100%; height: auto; }
+.cap { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pair > * { min-width: 0; }
+@media (max-width: 700px) { .pair { grid-template-columns: 1fr; } }
+.decisions { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.decision { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.decision > * { min-width: 0; }
+.decision b { font: 700 19px/1.25 var(--display); letter-spacing: -0.01em; }
+.decision p { color: var(--muted); font-size: 16px; }
+.decision .why { font: 500 11px var(--mono); color: var(--accent); letter-spacing: .08em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+@media (max-width: 700px) { .decision { grid-template-columns: 1fr; gap: 6px; } }
+.vtrack { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+.vbtn { all: unset; box-sizing: border-box; cursor: pointer; flex: 0 0 auto; display: grid; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); min-width: 112px; }
+.vbtn small { font: 500 11px var(--mono); color: var(--faint); }
+.vbtn b { font: 700 15px var(--display); }
+.vbtn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.vbtn[aria-pressed="true"] small { color: inherit; opacity: .65; }
+.ba { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 10; max-width: 100%; user-select: none; touch-action: pan-y; }
+.ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ba .after { clip-path: inset(0 0 0 var(--x, 50%)); }
+.ba .handle { position: absolute; top: 0; bottom: 0; left: var(--x, 50%); width: 2px; margin-left: -1px; background: #FFFFFF; box-shadow: 0 0 0 1px rgba(0,0,0,.2); pointer-events: none; }
+.ba .handle::after { content: "\2194"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #FFFFFF; color: #121314; font-size: 18px; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+.ba .tag { position: absolute; top: 12px; font: 500 12px var(--mono); padding: 4px 9px; border-radius: 6px; background: rgba(18,19,20,.85); color: #FFFFFF; }
+.ba .tag.l { left: 12px; } .ba .tag.r { right: 12px; }
+.ba input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+.chg { width: 100%; border-collapse: collapse; font-size: 16px; }
+.chg th { text-align: left; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); padding: 0 12px 8px 0; }
+.chg td { border-top: 1px solid var(--line); padding: 11px 12px 11px 0; vertical-align: top; }
+.chg td.t { color: var(--todo); font-style: italic; }
+.tbl { overflow-x: auto; }
+.rnext { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; padding-top: 24px; border-top: 1px solid var(--line); }
+.rnext button { all: unset; cursor: pointer; display: grid; gap: 2px; }
+.rnext button small { font: 500 11px var(--mono); color: var(--faint); letter-spacing: .08em; text-transform: uppercase; }
+.rnext button b { font: 800 clamp(24px, 3vw, 36px) var(--display); letter-spacing: -0.03em; }
+.rnext button:hover b { color: var(--accent); }
+.trade { font-size: 15px !important; margin-top: 6px; color: var(--muted); }
+.trade span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-right: 8px; }
+.ms { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 2px solid var(--ink); counter-reset: ms; }
+.ms li { padding: 14px 16px 0 0; display: grid; gap: 4px; counter-increment: ms; }
+.ms li + li { padding-left: 16px; border-left: 1px solid var(--line); }
+.ms li b { font: 700 19px var(--display); letter-spacing: -0.01em; }
+.ms li b::before { content: counter(ms, decimal-leading-zero) "  "; font: 500 12px var(--mono); color: var(--accent); }
+.ms li span { color: var(--muted); font-size: 15px; }
+@media (max-width: 760px) { .ms { grid-template-columns: 1fr 1fr; } .ms li:nth-child(3) { padding-left: 0; border-left: 0; } }
+.tool { display: grid; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.tool:last-child { border-bottom: 0; }
+.tool h4 { font-size: 24px; }
+.tool-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0; }
+.tool-notes dt { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.tool-notes dd { margin: 4px 0 0; font-size: 15px; }
+@media (max-width: 700px) { .tool-notes { grid-template-columns: 1fr; } }
+.note-card { display: grid; place-items: center; padding: 24px; aspect-ratio: 16 / 10; max-width: 100%; color: var(--muted); font-size: 16px; text-align: center; }
+.sketch-wrap { background: #FBF8F0; aspect-ratio: 16 / 10; max-width: 100%; }
+.sketch { width: 100%; height: 100%; display: block; }
+.princ-r { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 960px) { .princ-r { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .princ-r { grid-template-columns: 1fr; } }
+.bullets { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.bullets li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; font-size: 17px; }
+.bullets li::before { content: ""; width: 6px; height: 6px; margin-top: 11px; border-radius: 50%; background: var(--accent); }
+</style>
+
+<script>
+(function () { var t = null; try { t = localStorage.getItem('theme'); } catch (e) {}
+  if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', t); })();
+</script>
+
+
+</head>
+<body>
+<header class="nav" id="nav"><div class="in">
+  <a class="brand" href="#top"><i></i>Nitai Weinberg</a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a><a class="opt" href="#approach">Approach</a><a class="opt" href="#index">Index</a><a href="#about">About</a>
+    <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to dark mode">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    </button>
+  </nav>
+</div></header>
+
+<div class="wrap">
+  <!-- HERO -->
+  <section class="hero" id="top" style="padding-top:56px">
+    <div>
+      <p class="eyebrow">Product · Design · Engineering · Vancouver</p>
+      <h1 style="margin-top:18px">I turn messy problems <span class="soft">into products people use.</span></h1>
+      <p class="lede">I frame the problem, make the trade-offs, sketch it, build it, and ship it in small releases. I’m technical enough to write the code and curious enough to keep asking who it’s for.</p>
+      <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="#approach">How I work</a></div>
+    </div>
+    <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite">Now showing <b id="hero-now">Sedi</b></p></div>
+  </section>
+
+  <div class="proof" aria-label="At a glance">
+    <div><b>30+</b><span>products designed and shipped</span></div>
+    <div><b>7</b><span>versions of Sedi in two years</span></div>
+    <div><b>75 → 8</b><span>tickets sequenced into release phases</span></div>
+    <div><b>0</b><span>servers needed for my core apps</span></div>
+  </div>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="sec-head"><div><p class="eyebrow">Selected work</p><h2 style="margin-top:10px">Five products, start to finish.</h2></div>
+      <p>Each one started with a real problem, mine or someone close to me. Every case study walks through the decisions and trade-offs, how it shipped, and what changed once people used it.</p></div>
+    <div class="work">
+      <div class="work-stick" aria-hidden="true">
+        <div class="dotstage"><canvas id="work-dots"></canvas></div>
+        <div class="meta"><span id="work-name">Sedi</span><span id="work-count">01 / 05</span></div>
+      </div>
+      <div class="cases" id="cases"></div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach">
+    <div class="sec-head"><div><p class="eyebrow">Approach</p><h2 style="margin-top:10px">How I work.</h2></div>
+      <p>The way I run every product, from fuzzy idea to shipped release. Tap a step to see it in Sedi.</p></div>
+    <div class="steps" role="tablist" aria-label="Approach" id="steps"></div>
+    <div class="step-detail" id="step-detail" role="tabpanel"></div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section id="principles">
+    <div class="sec-head"><div><p class="eyebrow">Principles</p><h2 style="margin-top:10px">What I design for.</h2></div>
+      <p>The rules I hold my own work to. Tap a card to see one in a real product.</p></div>
+    <div class="princ" id="princ"></div>
+  </section>
+
+  <!-- INDEX -->
+  <section id="index">
+    <div class="sec-head"><div><p class="eyebrow">Index</p><h2 style="margin-top:10px">More things I've made.</h2></div>
+      <p>Prototypes and products across health, local discovery, small business and productivity.</p></div>
+    <div class="index" id="index-list"></div>
+    <p style="margin-top:18px"><a class="btn ghost small" href="https://nweinberg97.github.io/Projects/">All 30+ projects ↗</a></p>
+  </section>
+
+  <!-- BEYOND -->
+  <section id="beyond">
+    <div class="sec-head"><div><p class="eyebrow">Beyond the screen</p><h2 style="margin-top:10px">What else I bring.</h2></div>
+      <p>I've worked across startups, customer experience, product, operations and community. It makes me a designer who thinks about the whole system, not just the screen.</p></div>
+    <div class="beyond">
+      <div><b>Product thinking</b><p>I start from the problem and ship the smallest thing that solves it, then listen and change it.</p></div>
+      <div><b>Operations</b><p>I care about the unglamorous parts that make a product actually work day to day.</p></div>
+      <div><b>Community</b><p>Bringing people together across different disciplines, online and in person.</p></div>
+      <div><b>Writing and speaking</b><p>A creative writer and public speaker. Clear words are part of the design.</p></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about">
+      <div style="display:grid;gap:20px">
+        <p class="eyebrow">About</p>
+        <p class="quote">On a journey to write, build, and <span>seek the good</span> in life.</p>
+      </div>
+      <div style="display:grid;gap:22px">
+        <div class="body">
+          <p>I'm Nitai, an <strong>interdisciplinary builder</strong> with an entrepreneurial streak. I'm happiest in ambiguous, early work: taking an idea from concept to something real, learning whatever tool it needs, and working with people from different disciplines.</p>
+          <p>Lately that means using <strong>technology, AI and automation</strong> to solve practical problems, improve everyday experiences, and help build healthier, more connected communities.</p>
+        </div>
+        <div class="kv">
+          <div><span>Based in</span><span>Vancouver, Canada</span></div>
+          <div><span>Product</span><span>Problem framing, specs, roadmaps, releases</span></div>
+          <div><span>Design</span><span>Research, wireframes, interaction, prototyping</span></div>
+          <div><span>Build</span><span>JavaScript, TypeScript, React, Swift, IndexedDB</span></div>
+          <div><span>Next</span><span>Launching Sedi on Product Hunt</span></div>
+          <div><span>Off the clock</span><span>Surfing, skiing, basketball, music, travel</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact">
+    <p class="eyebrow" style="color:inherit;opacity:.6">Contact</p>
+    <h2>Let's build something people actually use.</h2>
+    <div class="row2"><a class="btn" href="https://github.com/nweinberg97">GitHub ↗</a><a class="btn ghost" href="#work">Back to the work</a></div>
+  </div>
+
+  <footer><span>© 2026 Nitai Weinberg · designed and built by me 🤙</span><a href="https://nweinberg97.github.io/Projects/">All projects ↗</a></footer>
+</div>
+
+<div class="peek" id="peek"><img alt=""></div>
+<div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-labelledby="r-title"></div>
+
+<script>
+var P = {
+  sedi: { name: 'Sedi', icon: 'icons/sedi.svg', img: 'img/sedi-home.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/sedi/welcome/',
+    pitch: 'Four tools I kept rebuilding for two years, merged into one calm workspace.', role: 'Design, code', time: 'Aug 2024 to now', stack: 'Vanilla JS, local-first' },
+  nomnoms: { name: 'NomNoms', icon: 'icons/nomnoms.svg', img: 'img/nn-share.webp', tag: 'Real user', link: 'https://nweinberg97.github.io/NomNoms/',
+    pitch: 'A baby book that builds itself, designed for one real parent: my sister.', role: 'Design, code', time: '2026', stack: 'React, TypeScript' },
+  lhc: { name: 'Let Her Cook', icon: 'icons/let-her-cook.svg', img: 'img/lhc-home.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Let-Her-Cook/',
+    pitch: 'Every recipe has a home: links, screenshots, Grandma’s card, a text from your sister.', role: 'Design, code', time: 'Oct 2026', stack: 'React, TS, on-device OCR' },
+  coded: { name: 'Coded', icon: 'icons/coded.png', img: 'img/coded-feedback.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Coded/',
+    pitch: 'Learning to talk to engineers, as a game graded on ideas, not wording.', role: 'Design, code', time: '2026', stack: 'React, TypeScript' },
+  drift: { name: 'Drift', icon: 'icons/drift.png', img: 'img/drift-hero.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/Drift/',
+    pitch: 'A Mac focus timer you start by saying how long. Then you stay with it.', role: 'Design, code', time: '2026', stack: 'Swift, SwiftUI' }
+};
+var ORDER = ['sedi', 'nomnoms', 'lhc', 'coded', 'drift'];
+var FEATURED = ['sedi', 'nomnoms', 'lhc', 'coded', 'drift'];
+ORDER.forEach(function (k) { var im = new Image(); im.src = P[k].icon; P[k].im = im; });
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+
+// theme + nav
+(function () { var root = document.documentElement, btn = document.getElementById('theme-toggle');
+  function label() { btn.setAttribute('aria-label', root.getAttribute('data-theme') === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'); }
+  label(); btn.addEventListener('click', function () { var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(); dispatchEvent(new Event('themechange')); });
+  var nav = document.getElementById('nav'); addEventListener('scroll', function () { nav.classList.toggle('scrolled', scrollY > 8); }, { passive: true }); })();
+
+// ---------- dot field that rebuilds into product logos ----------
+function DotField(cv, opts) {
+  var ctx, W = 0, H = 0, pts = [], shape = null, mouse = { x: -999, y: -999 }, ink = '', rot = 0;
+  function size() { var r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1); W = Math.round(r.width); H = Math.round(r.height); if (!W || !H) return;
+    cv.width = W * dpr; cv.height = H * dpr; ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var N = Math.round(Math.min(2400, W * H / 120)); while (pts.length < N) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0, gx: 0, gy: 0, gz: 0 });
+    pts.length = N; pts.forEach(function (p, i) { var y = 1 - (i / (N - 1)) * 2, r2 = Math.sqrt(1 - y * y), th = i * 2.399963; p.gx = Math.cos(th) * r2; p.gy = y; p.gz = Math.sin(th) * r2; });
+    if (shape) show(shape.key); }
+  function sample(k) { var off = document.createElement('canvas'); off.width = W; off.height = H; var o = off.getContext('2d'), s = Math.min(W, H) * 0.62, x = W / 2 - s / 2, y = H / 2 - s / 2 - H * 0.02;
+    o.save(); rr(o, x, y, s, s, s * 0.22); o.clip(); o.drawImage(P[k].im, x, y, s, s); o.restore();
+    var d; try { d = o.getImageData(0, 0, W, H).data; } catch (e) { return null; } var out = [], step = Math.max(5, Math.round(Math.sqrt(s * s / pts.length) * 1.05));
+    for (var yy = 0; yy < H; yy += step) for (var xx = 0; xx < W; xx += step) { var q = (yy * W + xx) * 4; if (d[q + 3] > 140) out.push([xx, yy, 'rgb(' + d[q] + ',' + d[q + 1] + ',' + d[q + 2] + ')', d[q] + d[q + 1] + d[q + 2] < 120]); }
+    for (var i = out.length - 1; i > 0; i--) { var j = Math.random() * (i + 1) | 0, t = out[i]; out[i] = out[j]; out[j] = t; } return out; }
+  function show(k) { if (!P[k].im.complete) { P[k].im.onload = function () { show(k); }; return; } var s = sample(k); shape = s ? { key: k, pts: s } : null; }
+  cv.addEventListener('pointermove', function (e) { var r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  cv.addEventListener('pointerleave', function () { mouse.x = mouse.y = -999; });
+  function frame() { if (!W) { size(); } if (ctx && W) { ink = ink || cssVar('--ink'); rot += 0.004; ctx.clearRect(0, 0, W, H);
+      var R = Math.min(W, H) * 0.34, cr = Math.cos(rot), sr = Math.sin(rot), ct = Math.cos(-0.35), st = Math.sin(-0.35), RAD = Math.min(W, H) * 0.14, dot = Math.max(1.3, Math.min(W, H) / 280);
+      for (var i = 0; i < pts.length; i++) { var p = pts[i], x1 = p.gx * cr + p.gz * sr, z1 = -p.gx * sr + p.gz * cr, y1 = p.gy * ct - z1 * st, z2 = p.gy * st + z1 * ct, depth = (z2 + 1) / 2, tx, ty, col = ink;
+        if (shape && i < shape.pts.length) { tx = shape.pts[i][0]; ty = shape.pts[i][1]; depth = 1; col = (shape.pts[i][3] && document.documentElement.getAttribute('data-theme') === 'dark') ? ink : shape.pts[i][2]; }
+        else if (shape) { tx = W / 2 + x1 * R * 1.4; ty = H / 2 + y1 * R * 1.4; depth *= 0.12; }
+        else { tx = W / 2 + x1 * R; ty = H / 2 + y1 * R; }
+        var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy; if (d2 < RAD * RAD) { var d = Math.sqrt(d2) || 1, f = (1 - d / RAD) * 5; p.vx += dx / d * f; p.vy += dy / d * f; }
+        p.vx += (tx - p.x) * 0.075; p.vy += (ty - p.y) * 0.075; p.vx *= 0.76; p.vy *= 0.76; p.x += p.vx; p.y += p.vy;
+        ctx.globalAlpha = 0.12 + depth * 0.88; ctx.fillStyle = col; ctx.beginPath(); ctx.arc(p.x, p.y, dot * (0.65 + depth * 0.7), 0, 6.283); ctx.fill(); }
+      ctx.globalAlpha = 1; }
+    if (!reduce) requestAnimationFrame(frame); }
+  addEventListener('resize', function () { W = 0; }); addEventListener('themechange', function () { ink = ''; }); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { ink = ''; });
+  frame(); return { show: show };
+}
+var ready = Promise.all(ORDER.map(function (k) { return P[k].im.complete ? 0 : new Promise(function (r) { P[k].im.addEventListener('load', r); P[k].im.addEventListener('error', r); }); }));
+
+// hero: cycles through the products
+(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now');
+  ready.then(function () { function tick() { var k = ORDER[i++ % ORDER.length]; f.show(k); now.textContent = P[k].name; } setTimeout(tick, 700); setInterval(tick, 3600); }); })();
+
+// ---------- selected work (built once the case studies are defined) ----------
+function buildWork() { var list = document.getElementById('cases'), wf = DotField(document.getElementById('work-dots')), name = document.getElementById('work-name'), count = document.getElementById('work-count');
+  ORDER.forEach(function (k, i) { var p = P[k], c = el('article', 'case'); c.dataset.k = k;
+    var featured = FEATURED.indexOf(k) > -1;
+    c.innerHTML = '<div class="top"><img alt=""><div><h3></h3></div><span class="tag"></span></div><a class="shot" href="#"><img loading="lazy" width="1600" height="1000"></a><p class="pitch"></p>' +
+      '<dl><div><dt>Role</dt><dd class="r"></dd></div><div><dt>When</dt><dd class="w"></dd></div><div><dt>Built with</dt><dd class="s"></dd></div></dl><div class="acts"></div>';
+    c.querySelector('.top img').src = p.icon; c.querySelector('h3').textContent = p.name; c.querySelector('.tag').textContent = p.tag;
+    var im = c.querySelector('.shot img'); im.src = p.img; im.alt = p.name + ' screenshot'; c.querySelector('.pitch').textContent = p.pitch;
+    c.querySelector('.r').textContent = p.role; c.querySelector('.w').textContent = p.time; c.querySelector('.s').textContent = p.stack;
+    var acts = c.querySelector('.acts');
+    if (CASES[k]) { var b = el('button', 'btn', 'Read the case study'); b.type = 'button'; b.addEventListener('click', function () { openReader(k); }); acts.appendChild(b);
+      c.querySelector('.shot').addEventListener('click', function (e) { e.preventDefault(); openReader(k); }); }
+    else { c.querySelector('.shot').href = p.link; }
+    var a = el('a', 'btn ghost', 'Try it ↗'); a.href = p.link; acts.appendChild(a);
+    list.appendChild(c); });
+  ready.then(function () { wf.show('sedi'); });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var k = e.target.dataset.k; wf.show(k); name.textContent = P[k].name; count.textContent = String(ORDER.indexOf(k) + 1).padStart(2, '0') + ' / ' + String(ORDER.length).padStart(2, '0'); } }); }, { rootMargin: '-45% 0px -45% 0px' });
+  list.querySelectorAll('.case').forEach(function (c) { io.observe(c); }); }
+
+// ---------- approach ----------
+(function () { var S = [
+    ['Frame the problem', 'Start from a real problem and write it down plainly before touching a solution.', 'I kept losing notes and rewriting the same schedule. Writing that down showed the real issue: four tools that didn\u2019t share anything.', 'img/lin-taskly.webp', 'Taskly, Aug 2024: where Sedi started'],
+    ['Decide with trade-offs', 'Lay out the options, pick one, and write down what it costs.', 'Merging four tools onto one card system meant migrating their data and rewriting every view. I took the slower path because it removed duplicated logic for good.', 'img/lin-lifeos6.webp', 'LifeOS 6.0: the four tools on one card system for the first time'],
+    ['Ship in small releases', 'Break the work into milestones, sequence by dependency, and ship.', 'About 75 tickets became eight phases, starting with bugs and the shared card system because everything else depended on them. All eight shipped on Oct 12.', 'img/sedi-taskly.webp', 'Taskly inside Sedi, after the release'],
+    ['Roll out and listen', 'Protect people\u2019s data through the change, then use real signals to decide what\u2019s next.', 'A backup and import path kept everything safe through the move. Then seven feedback rounds in two days produced routines, a rolling week and a reminders pinboard.', 'img/sedi-weekly.webp', 'The rolling week: today is always first']
+  ], wrap = document.getElementById('steps'), det = document.getElementById('step-detail');
+  S.forEach(function (s, i) { var b = el('button', 'step'); b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'st' + i; b.setAttribute('aria-controls', 'step-detail');
+    b.innerHTML = '<span class="n">0' + (i + 1) + '</span><h4></h4><p></p>'; b.querySelector('h4').textContent = s[0]; b.querySelector('p').textContent = s[1];
+    b.addEventListener('click', function () { pick(i); }); wrap.appendChild(b); });
+  function pick(i) { wrap.querySelectorAll('.step').forEach(function (b, j) { b.setAttribute('aria-selected', i === j ? 'true' : 'false'); }); var s = S[i]; det.setAttribute('aria-labelledby', 'st' + i);
+    det.innerHTML = '<div><span class="ex">In practice \u00b7 Sedi</span><h4 style="margin-top:6px"></h4><p></p></div><figure style="margin:0"><div class="shot"><img width="1600" height="1000"></div><figcaption class="cap"></figcaption></figure>';
+    det.querySelector('h4').textContent = s[0]; det.querySelector('p').textContent = s[2]; var im = det.querySelector('img'); im.src = s[3]; im.alt = s[4]; det.querySelector('.cap').textContent = s[4]; }
+  pick(0); })();
+
+// ---------- principles ----------
+(function () { var D = [
+    ['Simple first', 'Every screen does one job. Extras wait until you ask.', 'Sedi’s home shows three things: the time, what’s next, and what changed recently.'],
+    ['Private by default', 'No account, no server. Nothing leaves the device unless you choose.', 'Let Her Cook reads photos and PDFs in the browser. Files are never uploaded, and only the recipe you approve is kept.'],
+    ['Turn weak spots into delight', 'If something has to be slow, make the wait part of the experience.', 'Sedi’s private voice needs a one-time download, so dots drift around the orb and snap into a ring as it loads.'],
+    ['Constraints on purpose', 'Limits shape behaviour. With little space, you choose what’s worth keeping.', 'Sedi’s task columns hold 10 and never scroll. When one fills, you finish, move or let something go.']
+  ], g = document.getElementById('princ');
+  D.forEach(function (d, i) { var b = el('button', 'pr'); b.type = 'button'; b.setAttribute('aria-expanded', 'false');
+    b.innerHTML = '<span class="f"><span class="ix">0' + (i + 1) + '</span><h4></h4><p></p><small>Tap for an example</small></span><span class="b"><span class="ix" style="color:inherit;opacity:.6">In practice</span><p></p><small>Tap to flip back</small></span>';
+    b.querySelector('.f h4').textContent = d[0]; b.querySelector('.f p').textContent = d[1]; b.querySelector('.b p').textContent = d[2];
+    b.addEventListener('click', function () { b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); }); g.appendChild(b); }); })();
+
+// ---------- index with hover previews ----------
+(function () { var R = [
+    ['Navoro', 'navoro', 'In-app help that points at the exact button and walks you through it. It runs inside Sedi.', 'https://nweinberg97.github.io/Navoro/', 'Live'],
+    ['Search for the Good', 'search-for-the-good', 'A search engine for the people, products and projects making the world better.', 'https://nweinberg97.github.io/Search-for-the-Good/', 'Demo'],
+    ['FORM', 'form', 'Helps physio patients do their home exercises, and shows their physio how it went.', 'https://nweinberg97.github.io/Form/', 'Demo'],
+    ['Bluerig', 'bluerig', 'Websites for HVAC and plumbing shops that the crew updates from the truck.', 'https://nweinberg97.github.io/Bluerig/', 'Demo'],
+    ['Sunroll', 'sunroll', 'Find a time that works for everyone, across time zones. No sign-up.', 'https://nweinberg97.github.io/Sunroll/', 'In progress'],
+    ['Reclo', 'reclo', 'A guide to the best places in big cities, where nobody can pay to be listed.', 'https://nweinberg97.github.io/Reclo/', 'Live'],
+    ['Sogo', 'sogo', 'A behaviour-change concept: bet on yourself instead of sports.', 'https://nweinberg97.github.io/Sogo/', 'Concept'],
+    ['Context', 'context', 'Turns advice from a physio, coach or tutor into a routine you follow.', 'https://github.com/nweinberg97/Context', 'In progress']
+  ], list = document.getElementById('index-list'), peek = document.getElementById('peek'), pim = peek.querySelector('img');
+  R.forEach(function (r) { var a = el('a', 'row'); a.href = r[3]; var ext = r[1] === 'form' ? 'png' : 'svg';
+    a.innerHTML = '<img alt="" width="30" height="30"><b></b><span></span><em></em>'; a.querySelector('img').src = 'icons/' + r[1] + '.' + ext; a.querySelector('b').textContent = r[0]; a.querySelector('span').textContent = r[2]; a.querySelector('em').textContent = r[4] + ' ↗';
+    a.addEventListener('mouseenter', function () { pim.src = 'shots/' + r[1] + '.webp'; pim.alt = r[0]; peek.classList.add('on'); });
+    a.addEventListener('mouseleave', function () { peek.classList.remove('on'); });
+    a.addEventListener('mousemove', function (e) { var x = Math.min(innerWidth - 320, e.clientX + 24), y = Math.min(innerHeight - 200, e.clientY - 90); peek.style.left = x + 'px'; peek.style.top = y + 'px'; });
+    list.appendChild(a); }); })();
+
+// ---------- case study reader ----------
+function fig(src, alt, cap, w, h) { return '<figure style="margin:0"><div class="rfig"><img src="' + src + '" alt="' + alt + '" width="' + (w || 1600) + '" height="' + (h || 1000) + '" loading="lazy"></div>' + (cap ? '<figcaption class="cap">' + cap + '</figcaption>' : '') + '</figure>'; }
+function pair(a, b) { return '<div class="pair">' + a + b + '</div>'; }
+function txt(h, ps) { return '<div class="txt">' + (h ? '<h3>' + h + '</h3>' : '') + ps.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</div>'; }
+function decs(list) { return '<div class="decisions">' + list.map(function (d) { return '<div class="decision"><b>' + d[0] + '</b><div><p>' + d[1] + '</p>' + (d[2] ? '<p class="trade"><span>Trade-off</span>' + d[2] + '</p>' : '') + '</div></div>'; }).join('') + '</div>'; }
+function steps(list) { return '<ol class="ms">' + list.map(function (m) { return '<li><b>' + m[0] + '</b><span>' + m[1] + '</span></li>'; }).join('') + '</ol>'; }
+function chg(head, rows) { return '<div class="tbl"><table class="chg"><thead><tr><th>' + head[0] + '</th><th>' + head[1] + '</th></tr></thead><tbody>' + rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody></table></div>'; }
+function tool(name, a, b, notes) { return '<article class="tool"><h4>' + name + '</h4>' + pair(fig(a[0], a[1], a[2]), b ? fig(b[0], b[1], b[2]) : '<div class="rfig note-card"><p>' + notes[3] + '</p></div>') +
+  '<dl class="tool-notes"><div><dt>Started as</dt><dd>' + notes[0] + '</dd></div><div><dt>Kept</dt><dd>' + notes[1] + '</dd></div><div><dt>Changed</dt><dd>' + notes[2] + '</dd></div></dl></article>'; }
+var CASES = {
+  sedi: function () { return [
+    ['overview', 'Overview', txt('A calm workspace for tasks, goals, calendar and notes.', ['Sedi merges four tools I designed and rebuilt over two years into one product. It runs in the browser, keeps everything on your device, and works offline. I use it every day.', 'The name comes from Hebrew <em>seder</em> (order) and Latin <em>sedēre</em> (to sit, to settle).']), fig('img/sedi-home.webp', 'Sedi home: the time, what’s next, and recent changes.', 'Home: the time, what’s next, and what changed recently.')],
+    ['problem', 'Problem', txt(null, ['I kept losing notes, rewriting the same schedule, and failing to connect information that lived in different apps. Every tool I tried was either too clunky or too complex for how I actually plan a day.', 'The moment it clicked: the same task lived in three places at once, as a board card, a calendar block and a note, and none of them agreed. I was spending more time keeping my tools in sync than doing the work.'])],
+    ['sketch', 'From sketch', txt('It started as a clock.', ['The first sketch was one screen: a top bar with the atom logo, a toolbar down the right side, and the time in the middle. Everything else was added one tool at a time, only when I needed it.']), pair('<figure style="margin:0"><div class="rfig sketch-wrap"><svg class="sketch" id="sketch" viewBox="0 0 800 500" role="img" aria-label="A hand-drawn wireframe: a top bar with an atom logo and menu, a large clock in the middle with a small Next up list, a vertical toolbar of round buttons on the right, and an orb at the bottom."></svg></div><figcaption class="cap">The first sketch: logo, side toolbar, and the time in the middle.</figcaption></figure>', fig('img/sedi-home.webp', 'Sedi home today.', 'Sedi’s home today. The layout never changed.'))],
+    ['evolution', 'Evolution', txt('Seven versions, two years.', ['Each tool solved one part of the problem and made the gaps between them more obvious. LifeOS 6.0 put all four in one app on one card system. Six days later, 8.0 restructured navigation and the shared card. By the fall the merged code had grown in layers, so I rebuilt it from scratch as Sedi: one card system, one drag engine and one assistant. Tap through the versions.']),
+      '<div style="display:grid;gap:12px"><div class="vtrack" id="vtrack"></div><figure class="rfig"><img id="vimg" alt="" width="1600" height="1000"></figure><p class="cap" id="vcap"></p></div>',
+      '<div style="display:grid;gap:10px"><p class="eyebrow">Before and after · drag the line</p><div class="ba" id="ba"><img src="img/lin-lifeos6.webp" alt="LifeOS 6.0, June 2026." width="1600" height="1000"><img class="after" src="img/sedi-home.webp" alt="Sedi, October 2026." width="1600" height="1000"><span class="tag l">LifeOS 6.0 · Jun</span><span class="tag r">Sedi · Oct</span><span class="handle"></span><input id="ba-range" type="range" min="0" max="100" value="50" aria-label="Compare LifeOS 6.0 and Sedi"></div></div>'],
+    ['tools', 'Tool by tool', txt(null, ['Each tool started as its own app. Here’s what each one was, what it kept when it joined Sedi, and what changed.']),
+      tool('Taskly', ['img/lin-taskly.webp', 'Taskly standalone, 2024.', 'Standalone · Aug 2024'], ['img/sedi-taskly.webp', 'Taskly inside Sedi.', 'Inside Sedi · Oct 2026'], ['A simple Trello-style board for sorting my own tasks.', 'Five columns, drag and drop, and the trash.', 'Columns never scroll, so a full column means finish something. Ticking a task sends it to Completed, review cards get a “back in…” timer, and any task can move to another tool.']),
+      tool('Boardly', ['img/lin-boardly.webp', 'Boardly standalone, 2026.', 'Standalone · May 2026'], null, ['A FigJam-style board for each part of life: Health, Admin, Learning and more.', 'Goals, tasks and notes you place anywhere, and the cap of 10 boards.', 'Goals open into a SMART template. The add buttons moved into the canvas as a toolbar, with G, T and N shortcuts, and you can select and drag several cards at once.', 'Inside Sedi, Boardly keeps its canvas and gains the shared card, so a goal here can become a task in Taskly or an event in Timely.']),
+      tool('Timely', ['img/lin-timely.webp', 'Timely standalone, 2026.', 'Standalone · Jun 2026'], ['img/sedi-daily.webp', 'Timely daily view inside Sedi.', 'Inside Sedi · Oct 2026'], ['Two modes: Schedule for doing and Planning for thinking. Its sidebar inbox stripped a card down to plain text so it could go anywhere.', 'Both modes, the five parts of the day, recurring items and .ics export.', 'The inbox became the Universal Board, available in every tool. Routines are marked on the day, items are colour-coded by type, and a “Today’s plan” list sits beside the schedule.']),
+      tool('Brainly', ['img/lin-brainly.webp', 'Brainly standalone, 2026.', 'Standalone · Jun 2026'], ['img/sedi-brainly.webp', 'Brainly inside Sedi.', 'Inside Sedi · Oct 2026'], ['A thinking canvas for notes and links, with voice dictation and an experimental assistant that read your notes.', 'My Links, pastel tiles generated from each note, and dictation.', 'The assistant grew into ⌘K, which can search and act across all of Sedi. Folders now nest, hold PDFs and files, and any link can become a task.'])],
+    ['decisions', 'Key decisions', decs([
+      ['One card system for everything', 'Tasks, goals, notes, events and links are the same card underneath. A note can become an event and a task can become a goal, with nothing retyped.', 'A shared model meant migrating four tools’ data and rewriting each tool’s views. Slower up front, far less duplicated logic after.'],
+      ['The Universal Board', 'Drop any card on it and it’s flattened to plain text. Drag it out in another tool and it becomes that tool’s native type.', 'Flattening loses tool-specific fields, so it’s for moving ideas, not archiving them.'],
+      ['Columns that never scroll', 'Each task column holds 10. The limit pushes you to finish, move or let go of something instead of piling up.', 'Some people want infinite lists. I chose focus over capacity, and kept a Backlog column as the release valve.'],
+      ['Local-first, private by default', 'No account and no server. Everything lives on your device and works offline. Voice turns into text on your computer, and recordings are never saved.', 'No cloud sync yet. Native apps with sync are the next step, priced as a one-time purchase.'],
+      ['Ask Sedi, then confirm', 'You can ask Sedi to create or move things. It always asks first, and every change is logged.', 'One extra tap per command, in exchange for never losing trust in what the assistant did.']
+    ]), pair(fig('img/sedi-universal.webp', 'The Universal Board in Taskly.', 'The Universal Board.'), fig('img/sedi-assistant.webp', 'Sedi confirming a change before making it.', 'Ask, confirm, done.'))],
+    ['principles', 'Principles', '<div class="princ princ-r" id="r-princ"></div>'],
+    ['shipping', 'How I shipped it', txt('75 tickets, 8 phases, 1 release, 7 feedback rounds.', ['After a few weeks of daily use I wrote down everything that slowed me down. Then I treated it like a real release: scope it, sequence it, ship it, and listen.']),
+      steps([['Collect', 'About 75 tickets across the four tools, written as problems rather than fixes.'], ['Sequence', 'Grouped into eight phases, starting with bugs and the shared card system, because everything else depended on them.'], ['Ship', 'All eight phases shipped on Oct 12, with a full backup and import path so nothing was lost in the move.'], ['Listen', 'Seven feedback rounds over the next two days, each one changing what shipped next.']]),
+      txt(null, ['One round showed I was rescheduling the same items every single morning. That became routines that repeat daily, weekly or monthly, marked right on the day. Other changes from the rounds: a rolling week with today always first, reminders as a pinboard, and links to Google Calendar, Apple Reminders, Docs and Drive.']),
+      pair(fig('img/sedi-weekly.webp', 'The rolling week.', 'The rolling week: today is always first.'), fig('img/sedi-reminders.webp', 'Reminders as a pinboard.', 'Reminders became a pinboard.'))],
+    ['outcome', 'Where it is', txt(null, ['Sedi is in daily use and has its own landing page. The web app stays free. Native Mac and iPhone apps with sync are in development, with a one-time lifetime price instead of a subscription. Next up: a public launch on Product Hunt.', 'What it taught me: fix the system before the features. Once everything was one card, most features got simpler to build, and easier to explain.']), fig('img/sedi-welcome.webp', 'Sedi’s landing page.', 'The landing page.')]
+  ]; },
+  nomnoms: function () { return [
+    ['overview', 'Overview', txt('A baby book that builds itself.', ['Parents take hundreds of photos and videos in the first year, but turning them into a baby book is a chore nobody gets to. I designed NomNoms for one real person, my sister, and changed it based on how she actually used it.']), fig('img/nn-share.webp', 'NomNoms export options: PDF book, digital book, memory film and backup.', 'One book, four ways to keep it.')],
+    ['solution', 'Solution', '<div class="txt"><ul class="bullets"><li>Add photos, videos, voice notes and milestones as they happen.</li><li>NomNoms sorts them into chapters, picks the best photos and lays out every page.</li><li>Read it, download a print-ready PDF, share a digital book, or play it as a short film.</li></ul></div>', fig('img/nn-film.webp', 'The memory film title frame.', 'The memory film.')],
+    ['decisions', 'Key decisions', decs([
+      ['No blank pages', 'The book lays itself out as you add memories, so there’s never an empty template to fill in.', 'Less control over every page, so editable templates came later for the moments that need it.'],
+      ['Capture first, organize later', 'Adding a memory takes one step. Sorting into chapters happens automatically by date and milestone.', 'Automatic sorting can guess wrong, so every page can be swapped and re-ordered.'],
+      ['Many ways out', 'PDF, digital book, film and a full backup, so the memories outlive the app.', 'Four export paths to build and maintain, but it removes the fear of being locked in.']
+    ])],
+    ['changed', 'What changed', txt(null, ['I watched my sister use it and changed what she tripped on.']), chg(['She ran into', 'I changed'], [['She wanted to adjust a layout after the book was made', 'Editable templates'], ['The film felt flat without sound', 'Music for the film'], ['A page picked the wrong photo', 'Swapping pictures on a page'], ['She wanted it on both her phone and laptop', 'Sign-in']])]
+  ]; },
+  lhc: function () { return [
+    ['overview', 'Overview', txt('Every recipe has a home.', ['Recipes end up everywhere: a bookmarked site, a screenshot, a photo of Grandma’s card, a text from your sister. Let Her Cook takes a recipe however you have it, reads it on your device, and turns it into a draft you check before it’s saved. No account and no server.']), fig('img/lhc-home.webp', 'Let Her Cook home.', null, 1280, 800)],
+    ['decisions', 'Key decisions', decs([
+      ['Check it before it’s saved', 'Every import becomes an editable draft. Guesses are marked as suggested, and anything the parser can’t place shows up as leftover text instead of disappearing.', 'One more screen before saving, in exchange for never silently losing part of a recipe.'],
+      ['Read it on the device', 'Photos go through text recognition in the browser, and PDFs and Word files are read there too. Files are thrown away; only the approved recipe is kept.', 'The first photo import downloads about 4 MB of reading data. Slower once, private forever.'],
+      ['Honest about limits', 'Most recipe sites block apps from reading them. Instead of routing links through a hidden server, it asks you to paste the text and keeps the link as the source.', 'A small extra step for users, versus running a proxy that would see everyone’s links.'],
+      ['A demo you can leave', 'One tap adds 12 labelled sample recipes from Walla the koala. Exit demo removes them without touching your own.', 'Sample data is flagged in the schema, so it can never be confused with real recipes.']
+    ]), pair(fig('img/lhc-add.webp', 'Five ways to add a recipe.', 'Five ways in.', 1280, 800), fig('img/lhc-cook.webp', 'Cooking mode.', 'Cooking mode: big text, checklists, timers from the steps.', 1280, 800))],
+    ['rollout', 'Data and rollout', txt('Built so the data can move.', ['Every recipe follows one schema, with IDs and timestamps that can move to a server later without re-keying. Backups carry a version number: older backups are upgraded on import, newer ones are refused with a clear message, and duplicates are skipped, replaced or kept as copies, your choice.', 'Serving sizes rescale from the original amounts every time, so numbers never drift, and “a pinch” is never changed. The parser, storage, backups and imports are covered by 57 automated tests.']), fig('img/lhc-backup.webp', 'Backup and privacy page.', 'Backup and privacy, in plain words.', 1280, 800)],
+    ['next', 'What I’d measure', txt(null, ['Now that it’s live, the signals that would shape the next release: which import source people use most, how often a draft needs fixing before saving, and how many recipes people keep after the first week.'])]
+  ]; },
+  coded: function () { return [
+    ['overview', 'Overview', txt('Learning to talk to engineers, as a game.', ['I wanted to understand the technical words engineers use every day. Glossaries are dull, and nothing checked whether I actually understood a term. Coded has 170 concept cards you answer in your own words, plus small projects you build and ship in the browser.']), fig('img/coded-feedback.webp', 'A Coded card for Port with the key ideas it found.', 'Answers are graded on ideas, not exact wording.')],
+    ['decisions', 'Key decisions', decs([
+      ['Grade the idea, not the wording', 'Your answer is matched to the ideas that matter, then shown next to a model answer in plain English.', 'Fuzzy grading can be generous, so the model answer is always shown alongside.'],
+      ['Levels you earn', 'Seven levels unlock with XP, cards you’ve recalled, and projects you’ve shipped.', ''],
+      ['Spaced review', 'Cards come back just before you’d forget them.', ''],
+      ['Build to prove it', 'Eight small projects with a checker that confirms each one is shipped.', '']
+    ]), fig('img/coded-shipped.webp', 'A Coded project marked shipped.', 'Projects pass three checks before they count as shipped.')],
+    ['changed', 'What changed', txt(null, ['Two engineers tested it. Their feedback shaped the next version.']), chg(['They said', 'I changed'], [['It wasn’t clear who it was for', 'A clearer pitch on the home page'], ['Code inside cards was hard to read', 'Proper code formatting in cards'], ['Feedback said what was wrong, not why', 'More useful answer feedback'], ['There was no way to know a project worked', 'A checker that confirms a project is shipped']])]
+  ]; },
+  drift: function () { return [
+    ['overview', 'Overview', txt('Say how long, then stay with it.', ['Timer apps make you pick from fields and dials before you can start. By the time it’s set up, the focus is gone. Drift is a quiet menu-bar timer for the Mac: press ⌥ Space anywhere, type “45m writing”, and get back to work. I use it every workday.']), fig('img/drift-hero.webp', 'Drift landing page with a glowing progress ring.')],
+    ['decisions', 'Key decisions', decs([
+      ['Type it the way you’d say it', '“25”, “1:30”, “half an hour” and “add 5 minutes” all work. Extra words become the timer’s name.', ''],
+      ['Push-to-talk', 'Hold ⌥ V and say it. Speech is recognised on your Mac, not in the cloud.', 'Apple’s on-device recognition is a little less accurate than cloud services, and private.'],
+      ['Sounds made live', 'Brown noise, rain and low ambient are generated in real time. There are no audio files.', 'A tiny app, at the cost of fewer sound options.'],
+      ['Nothing to sign up for', 'No account and no network.', '']
+    ]), fig('img/drift-try.webp', 'Drift try-it section.', 'Start a timer the way you’d say it.')],
+    ['changed', 'What changed', txt(null, ['Drift changed as I used it every day.']), chg(['What bugged me', 'What changed'], [['I couldn’t read the time from across the desk', 'A bigger clock'], ['Silence was its own distraction', 'Focus sounds'], ['I needed a break timer while a work timer ran', 'Multiple timers at once'], ['Starting still took too many clicks', 'A faster way to start: ⌥ Space'], ['My hands were busy and I didn’t want to type', 'Voice commands']])]
+  ]; }
+};
+// ---------- principles (shared by the page and the Sedi case study) ----------
+var SEDI_P = [
+  ['Simple first', 'Every screen does one job. Extras wait until you ask.', 'Home shows three things: the time, what’s next, and what changed. Four tools share one card, so there’s one thing to learn.'],
+  ['Private by default', 'No account, no server. Nothing leaves your device unless you choose.', 'Works offline. Voice becomes text on your computer, and recordings are never saved. Claude is opt-in, with your own key.'],
+  ['Turn weak spots into delight', 'If something has to be slow, make the wait part of it.', 'Private voice needs a one-time download, so dots drift around the orb and snap into a ring as it loads. When the ring closes, it listens.'],
+  ['Constraints on purpose', 'Limits shape behaviour. With little space, you choose what’s worth keeping.', 'Task columns hold 10 and never scroll. When one fills, you finish, move or let something go.'],
+  ['Move anything anywhere', 'Tasks, goals, notes, events and links are one card underneath.', 'Drag a note onto the calendar or a link into Taskly. Drop a task on the trash for a crunch and an Undo.'],
+  ['Time looks forward', 'About what’s coming, not a pile of what’s done.', 'The week always starts on today. Past one-off items archive for 30 days, then delete themselves.']];
+function buildPrinc(g, D) { if (!g) return; g.innerHTML = '';
+  D.forEach(function (d, i) { var b = el('button', 'pr'); b.type = 'button'; b.setAttribute('aria-expanded', 'false');
+    b.innerHTML = '<span class="f"><span class="ix">0' + (i + 1) + '</span><h4></h4><p></p><small>Tap for an example</small></span><span class="b"><span class="ix" style="color:inherit;opacity:.6">In practice</span><p></p><small>Tap to flip back</small></span>';
+    b.querySelector('.f h4').textContent = d[0]; b.querySelector('.f p').textContent = d[1]; b.querySelector('.b p').textContent = d[2];
+    b.addEventListener('click', function () { b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); }); g.appendChild(b); }); }
+// ---------- a hand-drawn take on the first Sedi sketch ----------
+function drawSketch(svg) { if (!svg) return; var seed = 7; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; } var NS = 'http://www.w3.org/2000/svg', out = '';
+  function j(v) { return v + (rnd() - 0.5) * 3; }
+  function ln(x1, y1, x2, y2, c, w) { for (var k = 0; k < 2; k++) { var mx = (x1 + x2) / 2 + (rnd() - 0.5) * 4, my = (y1 + y2) / 2 + (rnd() - 0.5) * 4; out += '<path d="M' + j(x1) + ' ' + j(y1) + ' Q' + mx + ' ' + my + ' ' + j(x2) + ' ' + j(y2) + '" stroke="' + (c || '#2B2A27') + '" stroke-width="' + (w || 2) * (k ? 0.6 : 1) + '" fill="none" stroke-linecap="round" opacity="' + (k ? 0.5 : 0.9) + '"/>'; } }
+  function box(x, y, w, h, c, wd) { ln(x, y, x + w, y, c, wd); ln(x + w, y, x + w, y + h, c, wd); ln(x + w, y + h, x, y + h, c, wd); ln(x, y + h, x, y, c, wd); }
+  function circ(cx, cy, r, c, fill) { var d = ''; for (var a = 0; a <= 6.5; a += 0.35) { var rr2 = r + (rnd() - 0.5) * 2.5; d += (a ? ' L' : 'M') + (cx + Math.cos(a) * rr2).toFixed(1) + ' ' + (cy + Math.sin(a) * rr2).toFixed(1); } out += '<path d="' + d + '" stroke="' + (c || '#2B2A27') + '" stroke-width="2" fill="' + (fill || 'none') + '" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>'; }
+  function txt(x, y, s, size, c, anchor) { out += '<text x="' + x + '" y="' + y + '" font-family="Caveat, \'Comic Neue\', cursive" font-size="' + size + '" fill="' + (c || '#2B2A27') + '" text-anchor="' + (anchor || 'start') + '">' + s + '</text>'; }
+  box(24, 22, 752, 456, '#2B2A27', 2.4); ln(24, 82, 776, 82);
+  circ(64, 52, 5, '#2B2A27', '#2B2A27'); [0, 1.05, 2.1].forEach(function (a) { var d = ''; for (var t = 0; t <= 6.4; t += 0.3) { var x = Math.cos(t) * 20, y = Math.sin(t) * 8, xr = x * Math.cos(a) - y * Math.sin(a), yr = x * Math.sin(a) + y * Math.cos(a); d += (t ? ' L' : 'M') + (64 + xr + (rnd() - .5) * 1.5).toFixed(1) + ' ' + (52 + yr + (rnd() - .5) * 1.5).toFixed(1); } out += '<path d="' + d + '" stroke="#2B2A27" stroke-width="1.6" fill="none" opacity=".85"/>'; });
+  txt(94, 62, 'Sedi', 30); [44, 52, 60].forEach(function (y) { ln(722, y, 748, y, '#2B2A27', 2.2); });
+  box(285, 140, 230, 112, '#2B2A27', 2.2); txt(400, 222, '9:41', 78, '#2B2A27', 'middle'); ln(330, 272, 470, 272, '#9A958A', 1.6);
+  box(300, 292, 200, 104, '#2B2A27', 1.8); txt(314, 316, 'Next up', 22);
+  [334, 356, 378].forEach(function (y, i) { circ(320, y, 5); ln(334, y, 334 + 110 - i * 22, y, '#9A958A', 1.6); });
+  [170, 220, 270, 320, 370].forEach(function (y, i) { circ(732, y, 15, '#2B2A27', i === 2 ? '#2B2A27' : 'none'); });
+  circ(400, 446, 17); circ(400, 446, 6, '#2B2A27', '#2B2A27');
+  var O = '#E8552B'; txt(560, 160, 'tools live here', 28, O); ln(640, 168, 708, 210, O, 2); ln(708, 210, 694, 204, O, 2); ln(708, 210, 702, 196, O, 2);
+  txt(80, 190, 'just the time, big', 28, O); ln(170, 198, 272, 180, O, 2); ln(272, 180, 258, 176, O, 2); ln(272, 180, 262, 190, O, 2);
+  txt(120, 128, 'atom = all 4 tools', 26, O); ln(118, 112, 84, 70, O, 2);
+  txt(470, 456, 'ask anything', 26, O); ln(466, 448, 424, 446, O, 2);
+  svg.innerHTML = out; }
+buildWork();
+var lastFocus = null, readerKey = null;
+function openReader(k) {
+  var r = document.getElementById('reader'), p = P[k], secs = CASES[k](); readerKey = k; lastFocus = document.activeElement; r.innerHTML = '';
+  var bar = el('div', 'bar'), bin = el('div', 'in'); bar.appendChild(bin);
+  var bi = el('img'); bi.src = p.icon; bi.alt = ''; bin.appendChild(bi); bin.appendChild(el('b', null, '')).textContent = p.name;
+  var chap = el('nav', 'chap'); chap.setAttribute('aria-label', 'Chapters'); secs.forEach(function (s) { var a = el('a'); a.href = '#r-' + s[0]; a.textContent = s[1]; a.addEventListener('click', function (e) { e.preventDefault(); document.getElementById('r-' + s[0]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }); chap.appendChild(a); }); bin.appendChild(chap);
+  var close = el('button', 'btn ghost small close', 'Close ×'); close.type = 'button'; close.addEventListener('click', closeReader); bin.appendChild(close); r.appendChild(bar);
+  var body = el('div', 'rbody'), head = el('div', 'rhead');
+  head.innerHTML = '<p class="eyebrow">Case study · ' + p.tag + '</p><h1 id="r-title"></h1><div class="facts"><div><span>Role</span>' + p.role + '</div><div><span>When</span>' + p.time + '</div><div><span>Built with</span>' + p.stack + '</div><div><span>Try it</span><a href="' + p.link + '">Open ↗</a></div></div>';
+  head.querySelector('h1').textContent = p.pitch; body.appendChild(head);
+  secs.forEach(function (s) { var sec = el('section', 'rsec'); sec.id = 'r-' + s[0]; sec.style.padding = '0'; sec.appendChild(el('p', 'eyebrow', s[1]));
+    var col = el('div'); col.style.display = 'grid'; col.style.gap = '24px'; for (var i = 2; i < s.length; i++) col.insertAdjacentHTML('beforeend', s[i]); sec.appendChild(col); body.appendChild(sec); });
+  var nk = FEATURED[(FEATURED.indexOf(k) + 1) % FEATURED.length], nx = el('div', 'rnext');
+  nx.innerHTML = '<a class="btn ghost" href="' + p.link + '">Try ' + p.name + ' ↗</a>'; var nb = el('button'); nb.type = 'button'; nb.innerHTML = '<small>Next case study</small><b></b>'; nb.querySelector('b').textContent = P[nk].name + ' →';
+  nb.addEventListener('click', function () { openReader(nk); r.scrollTop = 0; }); nx.appendChild(nb); body.appendChild(nx); r.appendChild(body);
+  r.hidden = false; document.body.style.overflow = 'hidden'; r.scrollTop = 0; close.focus();
+  if (k === 'sedi') { wireSedi(); buildPrinc(document.getElementById('r-princ'), SEDI_P); drawSketch(document.getElementById('sketch')); }
+}
+function closeReader() { var r = document.getElementById('reader'); r.hidden = true; document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+addEventListener('keydown', function (e) { if (e.key === 'Escape' && !document.getElementById('reader').hidden) closeReader(); });
+function wireSedi() {
+  var V = [['Aug 2024', 'Taskly', 'A Trello-style board with five columns. Drag a task to the trash to delete it.', 'img/lin-taskly.webp'], ['May 2026', 'Boardly', 'A board for each part of life, with goals, tasks and notes placed anywhere.', 'img/lin-boardly.webp'],
+    ['Jun 2026', 'Timely', 'Scheduling and planning. The Universal Board first showed up here.', 'img/lin-timely.webp'], ['Jun 2026', 'Brainly', 'A canvas for notes and links, with dictation and an early assistant.', 'img/lin-brainly.webp'],
+    ['Jun 24, 2026', 'LifeOS 6.0', 'The first time all four tools lived in one app, on one card system.', 'img/lin-lifeos6.webp'], ['Jun 30, 2026', 'LifeOS 8.0', 'Six days later: restructured and refined.', 'img/lin-lifeos8.webp'],
+    ['Oct 2026', 'Sedi', 'A new codebase: one card system, one drag engine and one assistant across every tool.', 'img/sedi-home.webp']];
+  var track = document.getElementById('vtrack'), img = document.getElementById('vimg'), cap = document.getElementById('vcap');
+  var bs = V.map(function (v, i) { var b = el('button', 'vbtn'); b.type = 'button'; b.innerHTML = '<small></small><b></b>'; b.firstChild.textContent = v[0]; b.lastChild.textContent = v[1]; b.addEventListener('click', function () { show(i); }); track.appendChild(b); return b; });
+  function show(i) { bs.forEach(function (b, j) { b.setAttribute('aria-pressed', i === j ? 'true' : 'false'); }); img.src = V[i][3]; img.alt = V[i][1] + ', ' + V[i][0]; cap.textContent = V[i][1] + ' · ' + V[i][2]; }
+  show(V.length - 1);
+  var ba = document.getElementById('ba'), rg = document.getElementById('ba-range'); function set() { ba.style.setProperty('--x', rg.value + '%'); } rg.addEventListener('input', set); set();
+}
+</script>
+</body>
+</html>
