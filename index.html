@@ -533,7 +533,7 @@ function buildWork() { var list = document.getElementById('cases'), wf = DotFiel
     ['Sunroll', 'sunroll', 'Find a time that works for everyone, across time zones. No sign-up.', 'https://nweinberg97.github.io/Sunroll/', 'In progress'],
     ['Reclo', 'reclo', 'A guide to the best places in big cities, where nobody can pay to be listed.', 'https://nweinberg97.github.io/Reclo/', 'Live'],
     ['Sogo', 'sogo', 'A behaviour-change concept: bet on yourself instead of sports.', 'https://nweinberg97.github.io/Sogo/', 'Concept'],
-    ['Context', 'context', 'Turns advice from a physio, coach or tutor into a routine you follow.', 'https://github.com/nweinberg97/Context', 'In progress']
+    ['Context', 'context', 'Turns advice from a physio, coach or tutor into a routine you approve and follow. Nothing goes live until you say so.', 'https://nweinberg97.github.io/Context/', 'Demo']
   ], list = document.getElementById('index-list'), peek = document.getElementById('peek'), pim = peek.querySelector('img');
   R.forEach(function (r) { var a = el('a', 'row'); a.href = r[3]; var ext = r[1] === 'form' ? 'png' : 'svg';
     a.innerHTML = '<img alt="" width="30" height="30"><b></b><span></span><em></em>'; a.querySelector('img').src = 'icons/' + r[1] + '.' + ext; a.querySelector('b').textContent = r[0]; a.querySelector('span').textContent = r[2]; a.querySelector('em').textContent = r[4] + ' ↗';
