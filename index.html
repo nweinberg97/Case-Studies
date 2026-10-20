@@ -80,6 +80,16 @@ img { display: block; max-width: 100%; height: auto; }
 .hero h1 { font-size: clamp(42px, 6.4vw, 86px); line-height: .96; letter-spacing: -0.05em; font-weight: 900; }
 .hero h1 .soft { color: var(--faint); }
 .hero .lede { font-size: clamp(18px, 1.6vw, 20px); color: var(--muted); max-width: 40ch; margin-top: 22px; }
+.whys { list-style: none; margin: 26px 0 0; padding: 0; max-width: 560px; border-top: 1px solid var(--line); }
+.whys li { border-bottom: 1px solid var(--line); }
+.whys button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 0; font-size: 16px; color: var(--muted); transition: color .2s, padding .2s; }
+.whys button b { font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); white-space: nowrap; transition: color .2s; }
+.whys button b::after { content: " →"; opacity: 0; transition: opacity .2s; }
+.whys button:hover, .whys button:focus-visible, .whys button.on { color: var(--ink); padding-left: 6px; }
+.whys button:hover b, .whys button:focus-visible b, .whys button.on b { color: var(--accent); }
+.whys button:hover b::after, .whys button:focus-visible b::after { opacity: 1; }
+.whys button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+@media (max-width: 520px) { .whys button { flex-direction: column; gap: 2px; } }
 .hero .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
 .dotstage { position: relative; aspect-ratio: 1 / 1; max-width: 100%; }
 .dotstage canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; }
@@ -321,8 +331,14 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
   <section class="hero" id="top" style="padding-top:56px">
     <div>
       <p class="eyebrow">Product · Design · Engineering · Vancouver</p>
-      <h1 style="margin-top:18px">I turn messy problems <span class="soft">into products people use.</span></h1>
-      <p class="lede">I start from a real pain point, take out the unknowns, sketch or spec it, then build with AI and ship in small releases. I’m technical enough to build it myself and curious enough to keep asking who it’s for.</p>
+      <h1 style="margin-top:18px">I build the things <span class="soft">I wish existed.</span></h1>
+      <ul class="whys" id="whys" aria-label="Why each product exists">
+        <li><button type="button" data-k="sedi"><span>I kept losing notes and rewriting the same schedule.</span><b>Sedi</b></button></li>
+        <li><button type="button" data-k="nomnoms"><span>Baby books are a chore nobody gets to. My sister deserved one anyway.</span><b>NomNoms</b></button></li>
+        <li><button type="button" data-k="lhc"><span>Recipes live everywhere: links, screenshots, Grandma’s card.</span><b>Let Her Cook</b></button></li>
+        <li><button type="button" data-k="coded"><span>I wanted to speak the language engineers use every day.</span><b>Coded</b></button></li>
+        <li><button type="button" data-k="drift"><span>By the time a timer was set up, the focus was gone.</span><b>Drift</b></button></li>
+      </ul>
       <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="#approach">How I work</a></div>
     </div>
     <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite">Now showing <b id="hero-now">Sedi</b></p></div>
@@ -479,8 +495,14 @@ function DotField(cv, opts) {
 var ready = Promise.all(ORDER.map(function (k) { return P[k].im.complete ? 0 : new Promise(function (r) { P[k].im.addEventListener('load', r); P[k].im.addEventListener('error', r); }); }));
 
 // hero: cycles through the products
-(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now');
-  ready.then(function () { function tick() { var k = ORDER[i++ % ORDER.length]; f.show(k); now.textContent = P[k].name; } setTimeout(tick, 700); setInterval(tick, 3600); }); })();
+(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now'), hold = false, rows = document.querySelectorAll('#whys button');
+  function show(k) { f.show(k); now.textContent = P[k].name; rows.forEach(function (r) { r.classList.toggle('on', r.dataset.k === k); }); }
+  ready.then(function () { function tick() { if (hold) return; show(ORDER[i++ % ORDER.length]); } setTimeout(tick, 700); setInterval(tick, 3600); });
+  rows.forEach(function (r) { var k = r.dataset.k;
+    function on() { hold = true; ready.then(function () { show(k); }); i = ORDER.indexOf(k) + 1; }
+    function off() { hold = false; }
+    r.addEventListener('mouseenter', on); r.addEventListener('focus', on); r.addEventListener('mouseleave', off); r.addEventListener('blur', off);
+    r.addEventListener('click', function () { openReader(k); }); }); })();
 
 // ---------- selected work (built once the case studies are defined) ----------
 function buildWork() { var list = document.getElementById('cases'), wf = DotField(document.getElementById('work-dots')), name = document.getElementById('work-name'), count = document.getElementById('work-count');
