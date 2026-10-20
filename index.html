@@ -426,7 +426,7 @@ var P = {
   coded: { name: 'Coded', icon: 'icons/coded.png', img: 'img/coded-feedback.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Coded/',
     pitch: 'Learning to talk to engineers, as a game graded on ideas, not wording.', role: 'Design, code', time: '2026', stack: 'React, TypeScript' },
   drift: { name: 'Drift', icon: 'icons/drift.png', img: 'img/drift-hero.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/Drift/',
-    pitch: 'A Mac focus timer you start by saying how long. Then you stay with it.', role: 'Design, code', time: '2026', stack: 'Swift, SwiftUI' }
+    pitch: 'A Mac focus timer you start by saying how long. Then you stay with it.', role: 'Design, code', time: 'Oct 2026', stack: 'Swift, SwiftUI' }
 };
 var ORDER = ['sedi', 'nomnoms', 'lhc', 'coded', 'drift'];
 var FEATURED = ['sedi', 'nomnoms', 'lhc', 'coded', 'drift'];
@@ -611,13 +611,15 @@ var CASES = {
     ['changed', 'What changed', txt(null, ['Two engineers tested it. Their feedback shaped the next version.']), chg(['They said', 'I changed'], [['It wasn’t clear who it was for', 'A clearer pitch on the home page'], ['Code inside cards was hard to read', 'Proper code formatting in cards'], ['Feedback said what was wrong, not why', 'More useful answer feedback'], ['There was no way to know a project worked', 'A checker that confirms a project is shipped']])]
   ]; },
   drift: function () { return [
-    ['overview', 'Overview', txt('Say how long, then stay with it.', ['Timer apps make you pick from fields and dials before you can start. By the time it’s set up, the focus is gone. Drift is a quiet menu-bar timer for the Mac: press ⌥ Space anywhere, type “45m writing”, and get back to work. I use it every workday.']), fig('img/drift-hero.webp', 'Drift landing page with a glowing progress ring.')],
+    ['overview', 'Overview', txt('Say how long, then stay with it.', ['Timer apps make you pick from fields and dials before you can start. By the time it’s set up, the focus is gone. Drift is a quiet menu-bar timer for the Mac: press ⌥ Space anywhere, type “45m writing”, and get back to work. I use it every workday. It’s free and open source, and installs with one Terminal command that builds it on your Mac.']), fig('img/drift-hero.webp', 'Drift landing page with a glowing progress ring.', 'The landing page: the ring is the timer.')],
     ['decisions', 'Key decisions', decs([
       ['Type it the way you’d say it', '“25”, “1:30”, “half an hour” and “add 5 minutes” all work. Extra words become the timer’s name.', ''],
-      ['Push-to-talk', 'Hold ⌥ V and say it. Speech is recognised on your Mac, not in the cloud.', 'Apple’s on-device recognition is a little less accurate than cloud services, and private.'],
+      ['Push-to-talk', 'Hold ⌥ V and say it. Speech is recognised on your Mac, not in the cloud.', 'No wake word, so the mic is never left open. Voice needs the Mac’s on-device speech model (a one-time Dictation setting) and is English (US) only for now.'],
+      ['Timestamps, not ticks', 'A running timer stores when it ends, not a countdown. Sleep, App Nap or a force-quit can’t make it drift, and Drift does nothing at all when no timer is running.', 'A timer that ended while the Mac slept is marked done on wake, and only chimes if it ended under a minute ago.'],
+      ['Links that can’t hurt you', 'drift:// links let Siri Shortcuts, Raycast or Terminal start, pause or extend timers.', 'Any website can fire a link, so links can never cancel or shorten a timer.'],
       ['Sounds made live', 'Brown noise, rain and low ambient are generated in real time. There are no audio files.', 'A tiny app, at the cost of fewer sound options.'],
-      ['Nothing to sign up for', 'No account and no network.', '']
-    ]), fig('img/drift-try.webp', 'Drift try-it section.', 'Start a timer the way you’d say it.')],
+      ['Nothing to sign up for', 'No account and no network. It’s sandboxed with no network entitlement at all, so it can’t phone home even by accident.', '']
+    ]), pair(fig('img/drift-demos.webp', 'Drift launcher over a Mac desktop: 45m writing.', '⌥ Space from any app, type it, press Return.'), fig('img/drift-try.webp', 'Drift try-it section with a floating timer.', 'Start a timer the way you’d say it. The widget floats in the corner.'))],
     ['changed', 'What changed', txt(null, ['Drift changed as I used it every day.']), chg(['What bugged me', 'What changed'], [['I couldn’t read the time from across the desk', 'A bigger clock'], ['Silence was its own distraction', 'Focus sounds'], ['I needed a break timer while a work timer ran', 'Multiple timers at once'], ['Starting still took too many clicks', 'A faster way to start: ⌥ Space'], ['My hands were busy and I didn’t want to type', 'Voice commands']])]
   ]; }
 };
