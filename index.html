@@ -126,9 +126,12 @@ section { padding-block: 96px 0; }
 @media (max-width: 860px) { .work { grid-template-columns: 1fr; } .work-stick { display: none; } }
 
 /* approach */
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); }
 .step { all: unset; box-sizing: border-box; cursor: pointer; padding: 20px 18px 22px 0; display: grid; gap: 8px; align-content: start; border-top: 2px solid transparent; margin-top: -1px; }
 .step + .step { padding-left: 18px; }
+.steps .step:nth-child(3n+1) { padding-left: 0; }
+.steps .step:nth-child(n+4) { border-top-color: var(--line); border-top-width: 1px; }
+.steps .step[aria-selected="true"]:nth-child(n+4) { border-top: 2px solid var(--accent); }
 .step .n { font: 500 12px var(--mono); color: var(--faint); }
 .step h4 { font-size: 22px; letter-spacing: -0.02em; }
 .step p { font-size: 15px; color: var(--muted); }
@@ -141,7 +144,8 @@ section { padding-block: 96px 0; }
 .step-detail h4 { font-size: 24px; }
 .step-detail p { color: var(--muted); margin-top: 10px; }
 .step-detail .ex { font: 500 12px var(--mono); color: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
-@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } .step:nth-child(3) { padding-left: 0; } .step-detail { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } .steps .step { padding-left: 18px; } .steps .step:nth-child(odd) { padding-left: 0; } .steps .step:nth-child(n+3) { border-top: 1px solid var(--line); } .steps .step[aria-selected="true"] { border-top: 2px solid var(--accent); } .step-detail { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .steps { grid-template-columns: 1fr; } .steps .step, .steps .step:nth-child(odd) { padding: 16px 0 18px; } .steps .step:nth-child(n+2) { border-top: 1px solid var(--line); } .steps .step[aria-selected="true"] { border-top: 2px solid var(--accent); } .step h4 { font-size: 20px; } }
 
 /* principles */
 .princ { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -318,7 +322,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
     <div>
       <p class="eyebrow">Product · Design · Engineering · Vancouver</p>
       <h1 style="margin-top:18px">I turn messy problems <span class="soft">into products people use.</span></h1>
-      <p class="lede">I frame the problem, make the trade-offs, sketch it, build it, and ship it in small releases. I’m technical enough to write the code and curious enough to keep asking who it’s for.</p>
+      <p class="lede">I start from a real pain point, take out the unknowns, sketch or spec it, then build with AI and ship in small releases. I’m technical enough to build it myself and curious enough to keep asking who it’s for.</p>
       <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="#approach">How I work</a></div>
     </div>
     <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite">Now showing <b id="hero-now">Sedi</b></p></div>
@@ -347,7 +351,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
   <!-- APPROACH -->
   <section id="approach">
     <div class="sec-head"><div><p class="eyebrow">Approach</p><h2 style="margin-top:10px">How I work.</h2></div>
-      <p>The way I run every product, from fuzzy idea to shipped release. Tap a step to see it in Sedi.</p></div>
+      <p>The same six steps for every product, from a pain point to a shipped release. Tap a step to see it in a real project.</p></div>
     <div class="steps" role="tablist" aria-label="Approach" id="steps"></div>
     <div class="step-detail" id="step-detail" role="tabpanel"></div>
   </section>
@@ -499,17 +503,22 @@ function buildWork() { var list = document.getElementById('cases'), wf = DotFiel
 
 // ---------- approach ----------
 (function () { var S = [
-    ['Frame the problem', 'Start from a real problem and write it down plainly before touching a solution.', 'I kept losing notes and rewriting the same schedule. Writing that down showed the real issue: four tools that didn\u2019t share anything.', 'img/lin-taskly.webp', 'Taskly, Aug 2024: where Sedi started'],
-    ['Decide with trade-offs', 'Lay out the options, pick one, and write down what it costs.', 'Merging four tools onto one card system meant migrating their data and rewriting every view. I took the slower path because it removed duplicated logic for good.', 'img/lin-lifeos6.webp', 'LifeOS 6.0: the four tools on one card system for the first time'],
-    ['Ship in small releases', 'Break the work into milestones, sequence by dependency, and ship.', 'About 75 tickets became eight phases, starting with bugs and the shared card system because everything else depended on them. All eight shipped on Oct 12.', 'img/sedi-taskly.webp', 'Taskly inside Sedi, after the release'],
-    ['Roll out and listen', 'Protect people\u2019s data through the change, then use real signals to decide what\u2019s next.', 'A backup and import path kept everything safe through the move. Then seven feedback rounds in two days produced routines, a rolling week and a reminders pinboard.', 'img/sedi-weekly.webp', 'The rolling week: today is always first']
+    ['Start with a pain point', 'A real problem, mine or someone close to me, written down plainly before any solution.', 'Sedi', 'I kept losing notes and rewriting the same schedule, because my tasks, calendar and notes lived in tools that didn’t share anything.', 'img/lin-taskly.webp', 'Taskly, Aug 2024: where Sedi started'],
+    ['Take out the unknowns', 'I brainstorm with Gemini and ask about everything I don’t know yet: technical limits, the stack, what’s even possible.', 'Let Her Cook', 'The kind of question I settle here: can a web app read a recipe link? Mostly no, because sites block it. So Let Her Cook asks you to paste the text instead, rather than routing links through a hidden server.', 'img/lhc-add.webp', 'Let Her Cook’s ways in, shaped by what a browser can and can’t read'],
+    ['Sketch it or spec it', 'Unsure how it should feel? I sketch a low-fidelity prototype. Clear on it? I describe the vision, build and design to ChatGPT in detail and ask for a product requirements document.', 'Sedi', 'Sedi started as one sketched screen: the atom logo, a toolbar down the side, and the time in the middle. The layout still holds today.', 'sketch', 'Sedi’s first sketch'],
+    ['Build and ship fast', 'I bring the PRD, screenshots and any sketches into Claude, build with it, and get a first version out quickly.', 'Drift', 'Drift went from its first commit to an installable Mac app, with the widget, shortcuts, voice, an installer and automated tests, on the same day.', 'img/drift-hero.webp', 'Drift: first commit to installable app on Oct 7'],
+    ['Use it, write tickets', 'I live with each version, notice where it slows me down, and write every pain point down as a ticket.', 'Sedi', 'A few weeks of daily use produced about 75 tickets. I grouped them into eight phases, starting with the shared card system everything else depended on, and shipped all eight on Oct 12.', 'img/sedi-taskly.webp', 'Taskly inside Sedi, after the release'],
+    ['Sandbox, then ship', 'Before I ship, I test ideas in sandboxed previews with Claude, so I can see the options side by side and keep what works.', 'Sedi', 'Sedi’s Home went through glass and no glass, tiles and lists, and back to calm over two days of previews. The launch kept one pane of glass around the clock, on a sky that follows the time of day.', 'img/sedi-home.webp', 'The Home that shipped']
   ], wrap = document.getElementById('steps'), det = document.getElementById('step-detail');
   S.forEach(function (s, i) { var b = el('button', 'step'); b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'st' + i; b.setAttribute('aria-controls', 'step-detail');
     b.innerHTML = '<span class="n">0' + (i + 1) + '</span><h4></h4><p></p>'; b.querySelector('h4').textContent = s[0]; b.querySelector('p').textContent = s[1];
     b.addEventListener('click', function () { pick(i); }); wrap.appendChild(b); });
   function pick(i) { wrap.querySelectorAll('.step').forEach(function (b, j) { b.setAttribute('aria-selected', i === j ? 'true' : 'false'); }); var s = S[i]; det.setAttribute('aria-labelledby', 'st' + i);
-    det.innerHTML = '<div><span class="ex">In practice \u00b7 Sedi</span><h4 style="margin-top:6px"></h4><p></p></div><figure style="margin:0"><div class="shot"><img width="1600" height="1000"></div><figcaption class="cap"></figcaption></figure>';
-    det.querySelector('h4').textContent = s[0]; det.querySelector('p').textContent = s[2]; var im = det.querySelector('img'); im.src = s[3]; im.alt = s[4]; det.querySelector('.cap').textContent = s[4]; }
+    var media = s[4] === 'sketch' ? '<div class="shot sketch-wrap"><svg class="sketch" viewBox="0 0 800 500" role="img" aria-label="A hand-drawn wireframe of Sedi: atom logo, side toolbar and a big clock."></svg></div>' : '<div class="shot"><img width="1600" height="1000"></div>';
+    det.innerHTML = '<div><span class="ex"></span><h4 style="margin-top:6px"></h4><p></p></div><figure style="margin:0">' + media + '<figcaption class="cap"></figcaption></figure>';
+    det.querySelector('.ex').textContent = 'In practice · ' + s[2]; det.querySelector('h4').textContent = s[0]; det.querySelector('p').textContent = s[3];
+    if (s[4] === 'sketch') drawSketch(det.querySelector('svg')); else { var im = det.querySelector('img'); im.src = s[4]; im.alt = s[5]; }
+    det.querySelector('.cap').textContent = s[5]; }
   pick(0); })();
 
 // ---------- principles ----------
