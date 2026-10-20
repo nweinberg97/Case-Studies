@@ -95,6 +95,8 @@ img { display: block; max-width: 100%; height: auto; }
 .dotstage canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; }
 .now { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); display: flex; gap: 6px; align-items: center; font: 500 12px var(--mono); color: var(--muted); white-space: nowrap; }
 .now b { color: var(--ink); font-weight: 500; }
+.now { flex-direction: column; gap: 3px; text-align: center; }
+.now .kind { font: 400 13px var(--body); color: var(--muted); letter-spacing: 0; }
 @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 32px; } .dotstage { max-width: 420px; width: 100%; margin: 0 auto; } }
 
 .proof { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -341,7 +343,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
       </ul>
       <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="#approach">How I work</a></div>
     </div>
-    <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite">Now showing <b id="hero-now">Sedi</b></p></div>
+    <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite"><span>Now showing <b id="hero-now">Sedi</b></span><span class="kind" id="hero-kind">Planning workspace for the web</span></p></div>
   </section>
 
   <div class="proof" aria-label="At a glance">
@@ -437,15 +439,15 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
 
 <script>
 var P = {
-  sedi: { name: 'Sedi', icon: 'icons/sedi.svg', img: 'img/sedi-home.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/sedi/welcome/',
+  sedi: { name: 'Sedi', icon: 'icons/sedi.svg', img: 'img/sedi-home.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/sedi/welcome/', kind: 'Planning workspace for the web',
     pitch: 'Four tools I kept rebuilding for two years, merged into one calm workspace.', role: 'Design, code', time: 'Aug 2024 to now', stack: 'Vanilla JS, local-first' },
-  nomnoms: { name: 'NomNoms', icon: 'icons/nomnoms.svg', img: 'img/nn-share.webp', tag: 'Real user', link: 'https://nweinberg97.github.io/NomNoms/',
+  nomnoms: { name: 'NomNoms', icon: 'icons/nomnoms.svg', img: 'img/nn-share.webp', tag: 'Real user', link: 'https://nweinberg97.github.io/NomNoms/', kind: 'Baby book web app',
     pitch: 'A baby book that builds itself, designed for one real parent: my sister.', role: 'Design, code', time: '2026', stack: 'React, TypeScript, on-device' },
-  lhc: { name: 'Let Her Cook', icon: 'icons/let-her-cook.svg', img: 'img/lhc-home.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Let-Her-Cook/',
+  lhc: { name: 'Let Her Cook', icon: 'icons/let-her-cook.svg', img: 'img/lhc-home.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Let-Her-Cook/', kind: 'Recipe library web app',
     pitch: 'Every recipe has a home: links, screenshots, Grandma’s card, a text from your sister.', role: 'Design, code', time: 'Oct 2026', stack: 'React, TS, on-device OCR' },
-  coded: { name: 'Coded', icon: 'icons/coded.png', img: 'img/coded-feedback.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Coded/',
+  coded: { name: 'Coded', icon: 'icons/coded.png', img: 'img/coded-feedback.webp', tag: 'Live', link: 'https://nweinberg97.github.io/Coded/', kind: 'Gamified course in how software works',
     pitch: 'Learning to talk to engineers, as a game graded on ideas, not wording.', role: 'Design, code', time: '2026', stack: 'React, TypeScript' },
-  drift: { name: 'Drift', icon: 'icons/drift.png', img: 'img/drift-hero.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/Drift/',
+  drift: { name: 'Drift', icon: 'icons/drift.png', img: 'img/drift-hero.webp', tag: 'In daily use', link: 'https://nweinberg97.github.io/Drift/', kind: 'Focus timer for macOS',
     pitch: 'A Mac focus timer you start by saying how long. Then you stay with it.', role: 'Design, code', time: 'Oct 2026', stack: 'Swift, SwiftUI' }
 };
 var ORDER = ['sedi', 'nomnoms', 'lhc', 'coded', 'drift'];
@@ -495,8 +497,8 @@ function DotField(cv, opts) {
 var ready = Promise.all(ORDER.map(function (k) { return P[k].im.complete ? 0 : new Promise(function (r) { P[k].im.addEventListener('load', r); P[k].im.addEventListener('error', r); }); }));
 
 // hero: cycles through the products
-(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now'), hold = false, rows = document.querySelectorAll('#whys button');
-  function show(k) { f.show(k); now.textContent = P[k].name; rows.forEach(function (r) { r.classList.toggle('on', r.dataset.k === k); }); }
+(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now'), kind = document.getElementById('hero-kind'), hold = false, rows = document.querySelectorAll('#whys button');
+  function show(k) { f.show(k); now.textContent = P[k].name; kind.textContent = P[k].kind; rows.forEach(function (r) { r.classList.toggle('on', r.dataset.k === k); }); }
   ready.then(function () { function tick() { if (hold) return; show(ORDER[i++ % ORDER.length]); } setTimeout(tick, 700); setInterval(tick, 3600); });
   rows.forEach(function (r) { var k = r.dataset.k;
     function on() { hold = true; ready.then(function () { show(k); }); i = ORDER.indexOf(k) + 1; }
