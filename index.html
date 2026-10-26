@@ -227,6 +227,138 @@ section { padding-block: 96px 0; }
 .contact .todo { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 40%, transparent); }
 footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-block: 8px 40px; font: 500 12px var(--mono); color: var(--faint); }
 
+
+
+/* fun mode switch in the hero */
+.funswitch { margin-top: 22px; display: inline-flex; align-items: center; gap: 14px; text-decoration: none; padding: 10px 18px 10px 10px; border-radius: 999px; border: 1.5px dashed color-mix(in srgb, var(--ink) 30%, transparent); background: var(--surface); transition: border-color .2s, transform .2s; }
+.funswitch:hover { border-color: var(--accent); transform: translateY(-1px) rotate(-.6deg); }
+.funswitch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.fs-track { position: relative; width: 64px; height: 36px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); flex: none; transition: background .35s; }
+.fs-knob { position: absolute; top: 3px; left: 3px; width: 28px; height: 28px; border-radius: 50%; background: #FF7A3D; box-shadow: inset -4px -4px 0 rgba(0,0,0,.12), 0 2px 6px rgba(0,0,0,.25);
+  background-image: radial-gradient(circle at 50% 50%, transparent 46%, rgba(0,0,0,.35) 47%, rgba(0,0,0,.35) 52%, transparent 53%), linear-gradient(90deg, transparent 47%, rgba(0,0,0,.35) 47%, rgba(0,0,0,.35) 53%, transparent 53%);
+  transition: transform .55s cubic-bezier(.34,1.56,.64,1); }
+.funswitch:hover .fs-knob { animation: fsw .6s ease-in-out infinite alternate; }
+@keyframes fsw { from { transform: translateX(0) rotate(-20deg); } to { transform: translateX(6px) rotate(25deg); } }
+.funswitch[aria-checked="true"] .fs-track { background: var(--accent); }
+.funswitch[aria-checked="true"] .fs-knob { animation: none; transform: translateX(28px) rotate(540deg); }
+.fs-peek { position: absolute; left: 50%; bottom: 100%; display: flex; gap: 4px; transform: translate(-50%, 6px); opacity: 0; transition: opacity .25s, transform .35s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
+.fs-peek i { width: 9px; height: 9px; border-radius: 50%; }
+.fs-peek i:nth-child(1) { background: #59B2EC; } .fs-peek i:nth-child(2) { background: #C98A6B; } .fs-peek i:nth-child(3) { background: #FF7A3D; } .fs-peek i:nth-child(4) { background: #FF5A1F; } .fs-peek i:nth-child(5) { background: #F9A871; }
+.funswitch:hover .fs-peek { opacity: 1; transform: translate(-50%, -6px); }
+.funswitch:hover .fs-peek i { animation: fsb .5s ease-in-out infinite alternate; } .funswitch:hover .fs-peek i:nth-child(2) { animation-delay: .1s; } .funswitch:hover .fs-peek i:nth-child(3) { animation-delay: .2s; } .funswitch:hover .fs-peek i:nth-child(4) { animation-delay: .3s; } .funswitch:hover .fs-peek i:nth-child(5) { animation-delay: .4s; }
+@keyframes fsb { to { transform: translateY(-5px); } }
+.fs-txt { display: grid; line-height: 1.25; }
+.fs-txt b { font: 800 16px var(--display); color: var(--ink); }
+.fs-txt small { font-size: 13px; color: var(--muted); }
+.fs-ball { position: fixed; z-index: 50; width: 26px; height: 26px; border-radius: 50%; pointer-events: none; box-shadow: inset -4px -4px 0 rgba(0,0,0,.15); background-size: cover; }
+@media (prefers-reduced-motion: reduce) { .funswitch:hover .fs-knob, .funswitch:hover .fs-peek i { animation: none; } }
+
+/* page sinks behind the case-study sheet */
+#page { background: var(--bg); transition: transform .55s cubic-bezier(.32,.72,0,1), border-radius .55s, filter .55s; }
+html.sheet-open body { background: #050506; }
+html.sheet-open #page { transform: scale(.94); border-radius: 22px; filter: brightness(.7); overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { #page { transition: none; } html.sheet-open #page { transform: none; } }
+
+/* fun mode button in the nav */
+.nav nav a.fun-btn { color: var(--ink); border: 1px solid var(--line); margin-left: 4px; padding: 6px 12px; background: var(--surface); }
+.nav nav a.fun-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface); }
+
+/* phone nav: one line */
+.nav .brand, .nav nav a { white-space: nowrap; }
+@media (max-width: 480px) { .nav nav a.hide-sm { display: none; } .nav nav a.fun-btn .lbl { display: none; } .nav nav a.fun-btn::after { content: "Fun"; } .nav nav a.fun-btn { padding-right: 10px; } .brand { font-size: 15px; } }
+
+
+/* case-study carousel */
+.car { position: relative; }
+.car-track { position: relative; display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; padding: 6px 2px 10px; margin: -6px -2px 0; }
+.car-track::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: reduce) { .car-track { scroll-behavior: auto; } }
+.slide { --t: var(--accent); flex: 0 0 88%; scroll-snap-align: start; display: grid; grid-template-columns: 1.35fr 1fr; gap: 32px; align-items: center; padding: clamp(18px, 3vw, 34px);
+  border-radius: 28px; border: 1px solid var(--line); background: radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--t) 26%, var(--surface)) 0%, var(--surface) 62%); min-width: 0; }
+.slide > * { min-width: 0; }
+.sl-media { display: block; border-radius: 16px; overflow: hidden; aspect-ratio: 16 / 10; box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--t) 60%, #000), 0 0 0 1px var(--line);
+  transform: rotate(-1.4deg) translateY(4px); transition: transform .6s cubic-bezier(.2,.8,.2,1); cursor: pointer; background: var(--soft); }
+.slide:hover .sl-media, .slide:focus-within .sl-media { transform: rotate(0) translateY(-4px) scale(1.01); }
+.sl-media img { width: 100%; height: 100%; object-fit: cover; }
+.sl-copy { display: grid; gap: 14px; }
+.sl-copy .top { display: flex; gap: 12px; align-items: center; }
+.sl-copy .top img { width: 44px; height: 44px; border-radius: 11px; }
+.sl-copy h3 { font-size: clamp(30px, 3.4vw, 44px); line-height: 1; }
+.sl-copy .tag { margin-left: auto; font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); white-space: nowrap; }
+.sl-copy .pitch { font-size: clamp(19px, 1.8vw, 23px); line-height: 1.35; letter-spacing: -0.01em; }
+.sl-copy .kind { font: 500 12px var(--mono); color: var(--muted); }
+.sl-copy dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 4px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.sl-copy dt { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.sl-copy dd { margin: 2px 0 0; font-size: 14px; }
+.sl-copy .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.car-ctl { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; }
+.car-dots { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.car-dot { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 6px 10px 6px 6px; border-radius: 999px; font: 500 13px var(--body); color: var(--muted); border: 1px solid transparent; }
+.car-dot img { width: 22px; height: 22px; border-radius: 6px; }
+.car-dot .bar { position: relative; width: 28px; height: 3px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.car-dot .bar i { position: absolute; inset: 0; width: 0; background: var(--ink); }
+.car-dot[aria-selected="true"] { color: var(--ink); border-color: var(--line); background: var(--surface); }
+.car-dot[aria-selected="true"] .bar i { width: 100%; }
+.car.playing .car-dot[aria-selected="true"] .bar i { width: 0; animation: carfill var(--dur, 6s) linear forwards; }
+.car.paused .car-dot[aria-selected="true"] .bar i { animation-play-state: paused; }
+@keyframes carfill { to { width: 100%; } }
+.car-dot:focus-visible, .car-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.car-btns { display: flex; gap: 8px; flex: none; }
+.car-btn { all: unset; box-sizing: border-box; cursor: pointer; width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--ink); transition: transform .2s, border-color .2s; }
+.car-btn:hover { border-color: var(--ink); transform: translateY(-1px); }
+.car-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.car-btn .i-play { display: none; fill: currentColor; stroke: none; }
+.car:not(.playing) #car-play .i-pause { display: none; } .car:not(.playing) #car-play .i-play { display: block; }
+@media (max-width: 860px) { .slide { flex-basis: 92%; grid-template-columns: 1fr; gap: 20px; } .sl-media { transform: none; } }
+@media (max-width: 640px) { .car-dot span { display: none; } .car-dot { padding: 6px; } .sl-copy dl { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .car-dot .bar { display: none; } .car-dot[aria-selected="true"] .bar { display: block; width: 18px; } .car-dots { gap: 4px; flex-wrap: nowrap; } .car-btn { width: 40px; height: 40px; } .car-btns { gap: 6px; } }
+.reader .chap { flex: 1 1 auto; min-width: 0; -webkit-mask-image: linear-gradient(90deg,#000 85%,transparent); mask-image: linear-gradient(90deg,#000 85%,transparent); }
+@media (max-width: 1240px) { .rnav-pos { display: none; } }
+
+/* case study as a bottom sheet */
+.reader { position: fixed; inset: 0; z-index: 20; }
+.reader .scrim { position: absolute; inset: 0; background: rgba(5,5,6,.25); animation: scrimin .45s ease both; cursor: pointer; }
+@keyframes scrimin { from { opacity: 0; } }
+.reader .sheet { position: absolute; left: 0; right: 0; bottom: 0; top: max(26px, 5vh); background: var(--bg); border-radius: 24px 24px 0 0; overflow: auto; overscroll-behavior: contain;
+  box-shadow: 0 -18px 60px rgba(0,0,0,.35); animation: sheetin .6s cubic-bezier(.32,.72,0,1) both; will-change: transform;
+  padding: 0 max(20px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(20px, env(safe-area-inset-left, 0px)); }
+.reader.swap .sheet, .reader.swap .scrim { animation: none; }
+@keyframes sheetin { from { transform: translateY(100%); } }
+.reader.closing .sheet { transform: translateY(100%) !important; transition: transform .38s cubic-bezier(.32,.72,0,1); }
+.reader.closing .scrim { opacity: 0; transition: opacity .38s; }
+.reader.dragging .sheet { transition: none; animation: none; }
+.reader.settled .sheet, .reader.settled .scrim { animation: none; }
+.reader .scrim { transition: opacity .3s; }
+@media (prefers-reduced-motion: reduce) { .reader .sheet, .reader .scrim { animation: none; } .reader.closing .sheet { transition: none; } }
+.reader .bar { border-radius: 24px 24px 0 0; cursor: grab; touch-action: none; }
+.reader .grab { display: block; width: 44px; height: 5px; border-radius: 5px; background: color-mix(in srgb, var(--ink) 22%, transparent); margin: 9px auto 0; }
+.reader .bar .in { padding-block: 8px 12px; }
+.reader .racts { margin-left: auto; display: flex; gap: 6px; align-items: center; flex: none; }
+.reader .racts .icon-btn { width: 36px; height: 36px; border: 1px solid var(--line); }
+.reader .racts .icon-btn svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.reader .close { margin-left: 0; }
+@media (max-width: 700px) { .reader .racts .try { display: none; } }
+.rnav-pos { font: 500 12px var(--mono); color: var(--faint); }
+@media (max-width: 520px) { .rnav-pos { display: none; } }
+
+/* click to zoom */
+.sheet .rfig:has(> img) { position: relative; cursor: zoom-in; }
+.sheet .rfig:has(> img)::after { content: "⤢ Zoom"; position: absolute; top: 10px; right: 10px; font: 500 11px var(--mono); padding: 4px 8px; border-radius: 999px; background: rgba(0,0,0,.55); color: #fff; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.sheet .rfig:has(> img):hover::after { opacity: 1; }
+.zoom { position: fixed; inset: 0; z-index: 40; background: rgba(5,5,6,.88); display: grid; place-items: center; padding: 24px; cursor: zoom-out; animation: scrimin .25s ease both; }
+.zoom img { max-width: min(1600px, 96vw); max-height: 88vh; width: auto; height: auto; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); animation: zin .35s cubic-bezier(.2,.8,.2,1) both; }
+.zoom p { color: rgba(255,255,255,.75); font-size: 14px; margin-top: 12px; text-align: center; }
+@keyframes zin { from { transform: scale(.94); opacity: 0; } }
+
+/* sedi screen recording */
+.rvid { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #000; aspect-ratio: 16 / 10; }
+.rvid video { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+/* about page header */
+.ahero { padding-block: 64px 8px; display: grid; gap: 18px; }
+.ahero h1 { font-size: clamp(42px, 6.4vw, 86px); line-height: .96; letter-spacing: -0.05em; font-weight: 900; max-width: 14ch; }
+.ahero h1 span { color: var(--faint); }
+
 /* reader */
 .reader { position: fixed; inset: 0; z-index: 20; background: var(--bg); overflow: auto; overscroll-behavior: contain;
   padding: env(safe-area-inset-top, 0px) max(20px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(20px, env(safe-area-inset-left, 0px)); animation: rin .4s cubic-bezier(.2,.8,.2,1); }
@@ -296,7 +428,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
 .trade { font-size: 15px !important; margin-top: 6px; color: var(--muted); }
 .trade span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-right: 8px; }
 .ms { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 2px solid var(--ink); counter-reset: ms; }
-.ms li { padding: 14px 16px 0 0; display: grid; gap: 4px; counter-increment: ms; }
+.ms li { padding: 14px 16px 0 0; display: grid; gap: 4px; align-content: start; counter-increment: ms; }
 .ms li + li { padding-left: 16px; border-left: 1px solid var(--line); }
 .ms li b { font: 700 19px var(--display); letter-spacing: -0.01em; }
 .ms li b::before { content: counter(ms, decimal-leading-zero) "  "; font: 500 12px var(--mono); color: var(--accent); }
@@ -318,6 +450,17 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
 .bullets { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
 .bullets li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; font-size: 17px; }
 .bullets li::before { content: ""; width: 6px; height: 6px; margin-top: 11px; border-radius: 50%; background: var(--accent); }
+
+/* fun mode: a small switch in the header */
+.nav nav a.fun-btn { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; }
+.nav .fun-btn .fs-track { position: relative; width: 38px; height: 24px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); flex: none; transition: background .3s; }
+.nav .fun-btn .fs-knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background-color: #FF7A3D; box-shadow: inset -2px -2px 0 rgba(0,0,0,.14);
+  background-image: radial-gradient(circle at 50% 50%, transparent 44%, rgba(0,0,0,.4) 46%, rgba(0,0,0,.4) 54%, transparent 56%), linear-gradient(90deg, transparent 45%, rgba(0,0,0,.4) 45%, rgba(0,0,0,.4) 55%, transparent 55%);
+  transition: transform .5s cubic-bezier(.34,1.56,.64,1); animation: none; }
+.nav .fun-btn:hover .fs-knob { transform: translateX(4px) rotate(40deg); }
+.nav .fun-btn[aria-checked="true"] .fs-track { background: var(--accent); border-color: var(--accent); }
+.nav .fun-btn[aria-checked="true"] .fs-knob { transform: translateX(14px) rotate(360deg); }
+@media (prefers-reduced-motion: reduce) { .nav .fun-btn .fs-knob { transition: none; } }
 </style>
 
 <script>
@@ -329,10 +472,11 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
 
 </head>
 <body>
+<div id="page">
 <header class="nav" id="nav"><div class="in">
   <a class="brand" href="#top"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><mask id="nw-cut-nav" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="#fff"/><polyline points="13,13 51,22.5 29,32 51,41.5 13,51" fill="none" stroke="#000" stroke-width="3.1" stroke-linejoin="miter" stroke-miterlimit="12"/></mask></defs><rect width="64" height="64" rx="14" fill="#0B0B0C"/><g mask="url(#nw-cut-nav)"><g fill="#fff" transform="translate(32 32) skewX(-10) translate(-32 -32)"><rect x="18" y="15" width="10" height="34"/><rect x="36" y="15" width="10" height="34"/><polygon points="18,15 28,15 46,49 36,49"/></g></g></svg>Nitai Weinberg</a>
   <nav aria-label="Sections">
-    <a href="#work">Work</a><a class="opt" href="#approach">Approach</a><a class="opt" href="#index">Index</a><a href="projects.html">All projects</a><a class="opt play-link" href="play/">Playground</a><a class="opt" href="#about">About</a>
+    <a class="hide-sm" href="index.html#work">Work</a><a href="about.html">About</a><a class="opt" href="projects.html">All projects</a><a class="fun-btn" id="funswitch" href="play/index.html" role="switch" aria-checked="false" title="Fun mode: unlock the case studies with mini-games"><span class="fs-track" aria-hidden="true"><span class="fs-knob"></span></span><span class="lbl">Fun mode</span></a>
     <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to dark mode">
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
@@ -353,7 +497,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
         <li><button type="button" data-k="coded"><span>Software, learned the fun way.</span><b>Coded</b></button></li>
         <li><button type="button" data-k="drift"><span>A focus timer that keeps you honest.</span><b>Drift</b></button></li>
       </ul>
-      <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="#approach">How I work</a></div>
+      <div class="cta"><a class="btn" href="#work">Read the case studies ↓</a><a class="btn ghost" href="about.html">About me</a></div>
     </div>
     <div class="dotstage" id="hero-stage"><canvas id="hero-dots" aria-label="Dots that rebuild themselves into the logo of each product I've made. Move through them to scatter them."></canvas><p class="now" aria-live="polite"><span><span class="ns">Now showing&nbsp;</span><b id="hero-now">Sedi</b></span><span class="kind" id="hero-kind">, personal productivity workspace (web app)</span></p></div>
   </section>
@@ -367,77 +511,34 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
 
   <!-- WORK -->
   <section id="work">
-    <div class="sec-head"><div><p class="eyebrow">Selected work</p><h2 style="margin-top:10px">Five products, start to finish.</h2></div>
+    <div class="sec-head"><div><p class="eyebrow">Case studies</p><h2 style="margin-top:10px">Five products, start to finish.</h2></div>
       <p>Each one started with a real problem, mine or someone close to me. Every case study walks through the decisions and trade-offs, how it shipped, and what changed once people used it.</p></div>
-    <div class="work">
-      <div class="work-stick" aria-hidden="true">
-        <div class="dotstage"><canvas id="work-dots"></canvas></div>
-        <div class="meta"><span id="work-name">Sedi</span><span id="work-count">01 / 05</span></div>
+    <div class="car" id="car" role="region" aria-roledescription="carousel" aria-label="Case studies">
+      <div class="car-track" id="car-track"></div>
+      <div class="car-ctl">
+        <div class="car-dots" id="car-dots" role="tablist" aria-label="Choose a case study"></div>
+        <div class="car-btns">
+          <button class="car-btn" id="car-play" type="button" aria-label="Pause autoplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M7 5l12 7-12 7z"/></svg></button>
+          <button class="car-btn" id="car-prev" type="button" aria-label="Previous case study"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="car-btn" id="car-next" type="button" aria-label="Next case study"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
       </div>
-      <div class="cases" id="cases"></div>
     </div>
   </section>
 
-  <!-- APPROACH -->
-  <section id="approach">
-    <div class="sec-head"><div><p class="eyebrow">Approach</p><h2 style="margin-top:10px">How I work.</h2></div>
-      <p>The same six steps for every product, from a pain point to a shipped release. Tap a step to see it in a real project.</p></div>
-    <div class="steps" role="tablist" aria-label="Approach" id="steps"></div>
-    <div class="step-detail" id="step-detail" role="tabpanel"></div>
-  </section>
 
-  <!-- PRINCIPLES -->
-  <section id="principles">
-    <div class="sec-head"><div><p class="eyebrow">Principles</p><h2 style="margin-top:10px">What I design for.</h2></div>
-      <p>The rules I hold my own work to. Tap a card to see one in a real product.</p></div>
-    <div class="princ" id="princ"></div>
-  </section>
 
   <!-- INDEX -->
   <section id="index">
     <div class="sec-head"><div><p class="eyebrow">Index</p><h2 style="margin-top:10px">More things I've made.</h2></div>
       <p>Prototypes and products across health, local discovery, small business and productivity.</p></div>
     <div class="index" id="index-list"></div>
-    <p style="margin-top:18px"><a class="btn ghost small" href="projects.html">See all projects →</a></p>
+    <p style="margin-top:18px"><a class="btn ghost small" href="projects.html">See all 40 projects →</a></p>
   </section>
 
-  <!-- BEYOND -->
-  <section id="beyond">
-    <div class="sec-head"><div><p class="eyebrow">Beyond the screen</p><h2 style="margin-top:10px">What else I bring.</h2></div>
-      <p>I've worked across startups, customer experience, product, operations and community. It makes me a designer who thinks about the whole system, not just the screen.</p></div>
-    <div class="beyond">
-      <div><b>Product thinking</b><p>I start from the problem and ship the smallest thing that solves it, then listen and change it.</p></div>
-      <div><b>Operations</b><p>I care about the unglamorous parts that make a product actually work day to day.</p></div>
-      <div><b>Community</b><p>Bringing people together across different disciplines, online and in person.</p></div>
-      <div><b>Writing and speaking</b><p>A creative writer and public speaker. Clear words are part of the design.</p></div>
-    </div>
-  </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about">
-      <div style="display:grid;gap:20px">
-        <p class="eyebrow">About</p>
-        <p class="quote">On a journey to write, build, and <span>seek the good</span> in life.</p>
-      </div>
-      <div style="display:grid;gap:22px">
-        <div class="body">
-          <p>I'm Nitai, an <strong>interdisciplinary builder</strong> with an entrepreneurial streak. I'm happiest in ambiguous, early work: taking an idea from concept to something real, learning whatever tool it needs, and working with people from different disciplines.</p>
-          <p>Lately that means using <strong>technology, AI and automation</strong> to solve practical problems, improve everyday experiences, and help build healthier, more connected communities.</p>
-        </div>
-        <div class="kv">
-          <div><span>Based in</span><span>Vancouver, Canada</span></div>
-          <div><span>Product</span><span>Problem framing, specs, roadmaps, releases</span></div>
-          <div><span>Design</span><span>Research, wireframes, interaction, prototyping</span></div>
-          <div><span>Build</span><span>JavaScript, TypeScript, React, Swift, IndexedDB</span></div>
-          <div><span>Next</span><span>Launching Sedi on Product Hunt</span></div>
-          <div><span>Off the clock</span><span>Surfing, skiing, basketball, music, travel</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <a class="play-band" href="play/">
+  <a class="play-band" href="play/index.html">
     <span class="pb-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
     <span class="pb-txt"><b>Rather play?</b> Five mini-games (hoops, surf, penalty kicks, slicing and seek-and-find) where every win unlocks one of these projects.</span>
     <span class="pb-go">Open the playground →</span>
@@ -452,6 +553,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10
   <footer><span>© 2026 Nitai Weinberg · designed and built by me 🤙</span><a href="projects.html">All projects →</a></footer>
 </div>
 
+</div><!-- /page -->
 <div class="peek" id="peek"><img alt=""></div>
 <div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-labelledby="r-title"></div>
 
@@ -510,14 +612,14 @@ function DotField(cv, opts) {
       ctx.globalAlpha = 1; }
     if (!reduce) requestAnimationFrame(frame); }
   addEventListener('resize', function () { W = 0; }); addEventListener('themechange', function () { ink = ''; }); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { ink = ''; });
-  frame(); return { show: show };
+  frame(); return { show: show, burst: function () { pts.forEach(function (p) { var dx = p.x - W / 2, dy = p.y - H / 2, d = Math.hypot(dx, dy) || 1, k = 22 + Math.random() * 26; p.vx += dx / d * k; p.vy += dy / d * k; }); } };
 }
 var ready = Promise.all(ORDER.map(function (k) { return P[k].im.complete ? 0 : new Promise(function (r) { P[k].im.addEventListener('load', r); P[k].im.addEventListener('error', r); }); }));
 
 // hero: cycles through the products
-(function () { var f = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now'), kind = document.getElementById('hero-kind'), hold = false, rows = document.querySelectorAll('#whys button');
+(function () { if (!document.getElementById('hero-dots')) return; var f = window.heroDots = DotField(document.getElementById('hero-dots')), i = 0, now = document.getElementById('hero-now'), kind = document.getElementById('hero-kind'), hold = false, rows = document.querySelectorAll('#whys button');
   function show(k) { f.show(k); now.textContent = P[k].name; kind.textContent = ', ' + P[k].kind; rows.forEach(function (r) { r.classList.toggle('on', r.dataset.k === k); }); }
-  ready.then(function () { function tick() { if (hold) return; show(ORDER[i++ % ORDER.length]); } setTimeout(tick, 700); setInterval(tick, 3600); });
+  ready.then(function () { var plays = 0, t; function tick() { if (hold) return; show(ORDER[i++ % ORDER.length]); if (++plays > ORDER.length) clearInterval(t); } setTimeout(tick, 700); t = setInterval(tick, 3000); });
   rows.forEach(function (r) { var k = r.dataset.k;
     function on() { hold = true; ready.then(function () { show(k); }); i = ORDER.indexOf(k) + 1; }
     function off() { hold = false; }
@@ -525,26 +627,56 @@ var ready = Promise.all(ORDER.map(function (k) { return P[k].im.complete ? 0 : n
     r.addEventListener('click', function () { openReader(k); }); }); })();
 
 // ---------- selected work (built once the case studies are defined) ----------
-function buildWork() { var list = document.getElementById('cases'), wf = DotField(document.getElementById('work-dots')), name = document.getElementById('work-name'), count = document.getElementById('work-count');
-  ORDER.forEach(function (k, i) { var p = P[k], c = el('article', 'case'); c.dataset.k = k;
-    var featured = FEATURED.indexOf(k) > -1;
-    c.innerHTML = '<div class="top"><img alt=""><div><h3></h3></div><span class="tag"></span></div><a class="shot" href="#"><img loading="lazy" width="1600" height="1000"></a><p class="pitch"></p>' +
-      '<dl><div><dt>Role</dt><dd class="r"></dd></div><div><dt>When</dt><dd class="w"></dd></div><div><dt>Built with</dt><dd class="s"></dd></div></dl><div class="acts"></div>';
-    c.querySelector('.top img').src = p.icon; c.querySelector('h3').textContent = p.name; c.querySelector('.tag').textContent = p.tag;
-    var im = c.querySelector('.shot img'); im.src = p.img; im.alt = p.name + ' screenshot'; c.querySelector('.pitch').textContent = p.pitch;
-    c.querySelector('.r').textContent = p.role; c.querySelector('.w').textContent = p.time; c.querySelector('.s').textContent = p.stack;
-    var acts = c.querySelector('.acts');
-    if (CASES[k]) { var b = el('button', 'btn', 'Read the case study'); b.type = 'button'; b.addEventListener('click', function () { openReader(k); }); acts.appendChild(b);
-      c.querySelector('.shot').addEventListener('click', function (e) { e.preventDefault(); openReader(k); }); }
-    else { c.querySelector('.shot').href = p.link; }
-    var a = el('a', 'btn ghost', 'Try it ↗'); a.href = p.link; acts.appendChild(a);
-    list.appendChild(c); });
-  ready.then(function () { wf.show('sedi'); });
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var k = e.target.dataset.k; wf.show(k); name.textContent = P[k].name; count.textContent = String(ORDER.indexOf(k) + 1).padStart(2, '0') + ' / ' + String(ORDER.length).padStart(2, '0'); } }); }, { rootMargin: '-45% 0px -45% 0px' });
-  list.querySelectorAll('.case').forEach(function (c) { io.observe(c); }); }
+var TINT = { sedi: '#59B2EC', nomnoms: '#C98A6B', lhc: '#FF7A3D', coded: '#FF5A1F', drift: '#F9A871' };
+function buildWork() { var track = document.getElementById('car-track'); if (!track) return;
+  var car = document.getElementById('car'), dots = document.getElementById('car-dots'), DUR = 6500, cur = 0, timer = null, playing = !reduce, hovering = false, visible = false;
+  function make(k, i, clone) { var p = P[k], s = el('article', 'slide'); s.style.setProperty('--t', TINT[k]); s.setAttribute('aria-roledescription', 'slide'); s.setAttribute('aria-label', (i + 1) + ' of ' + ORDER.length + ': ' + p.name);
+    s.innerHTML = '<a class="sl-media" href="#case-' + k + '"><img loading="' + (i ? 'lazy' : 'eager') + '" width="1600" height="1000" alt=""></a><div class="sl-copy"><div class="top"><img alt="" width="44" height="44"><h3></h3><span class="tag"></span></div><p class="pitch"></p><p class="kind"></p>' +
+      '<dl><div><dt>Role</dt><dd class="r"></dd></div><div><dt>When</dt><dd class="w"></dd></div><div><dt>Built with</dt><dd class="s"></dd></div></dl><div class="acts"><button class="btn" type="button">Read the case study</button><a class="btn ghost">Try it ↗</a></div></div>';
+    var im = s.querySelector('.sl-media img'); im.src = p.img; im.alt = p.name + ' screenshot';
+    s.querySelector('.top img').src = p.icon; s.querySelector('h3').textContent = p.name; s.querySelector('.tag').textContent = p.tag; s.querySelector('.pitch').textContent = p.pitch;
+    s.querySelector('.kind').textContent = p.kind.charAt(0).toUpperCase() + p.kind.slice(1); s.querySelector('.r').textContent = p.role; s.querySelector('.w').textContent = p.time; s.querySelector('.s').textContent = p.stack;
+    s.querySelector('.acts a').href = p.link;
+    s.querySelector('.sl-media').addEventListener('click', function (e) { e.preventDefault(); openReader(k); });
+    s.querySelector('.acts button').addEventListener('click', function () { openReader(k); });
+    if (clone) { s.setAttribute('aria-hidden', 'true'); s.inert = true; s.dataset.of = i; return s; }
+    track.appendChild(s);
+    var d = el('button', 'car-dot'); d.type = 'button'; d.setAttribute('role', 'tab'); d.setAttribute('aria-label', p.name); d.innerHTML = '<img alt="" width="22" height="22"><span></span><b class="bar"><i></i></b>';
+    d.querySelector('img').src = p.icon; d.querySelector('span').textContent = p.name; d.addEventListener('click', function () { go(i, true); }); dots.appendChild(d);
+    return s; }
+  var slides = ORDER.map(function (k, i) { return make(k, i); }), n = slides.length;
+  // copies of the whole deck on both sides, so "next" from the last slide keeps moving right into slide 1
+  var pre = ORDER.map(function (k, i) { return make(k, i, true); }), post = ORDER.map(function (k, i) { return make(k, i, true); });
+  pre.forEach(function (c) { track.insertBefore(c, slides[0]); }); post.forEach(function (c) { track.appendChild(c); });
+  var all = pre.concat(slides, post);
+  function X(e) { return e.offsetLeft - all[0].offsetLeft; }
+  function jump(e) { track.style.scrollBehavior = 'auto'; track.scrollLeft = X(e); void track.offsetWidth; track.style.scrollBehavior = ''; }
+  car.style.setProperty('--dur', DUR + 'ms');
+  function mark(i) { cur = i; [].forEach.call(dots.children, function (d, j) { d.setAttribute('aria-selected', i === j ? 'true' : 'false'); }); restartBar(); }
+  function restartBar() { var b = dots.children[cur] && dots.children[cur].querySelector('.bar i'); if (b) { b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; } }
+  function go(i, user) { var target = i >= n ? post[i - n] : i < 0 ? pre[n + i] : slides[i]; i = (i + n) % n; if (reduce) jump(slides[i]); else track.scrollTo({ left: X(target), behavior: 'smooth' }); mark(i); if (user) schedule(); }
+  function schedule() { clearTimeout(timer); var run = playing && !hovering && visible && !document.hidden && document.getElementById('reader').hidden;
+    car.classList.toggle('playing', playing); car.classList.toggle('paused', playing && !run);
+    if (run) timer = setTimeout(function () { go(cur + 1); schedule(); }, DUR); }
+  var st; track.addEventListener('scroll', function () { clearTimeout(st); st = setTimeout(function () { var x = track.scrollLeft, best = 0, bd = 1e9;
+      all.forEach(function (s, j) { var d = Math.abs(X(s) - x); if (d < bd) { bd = d; best = j; } });
+      var i = best % n; if (best < n || best >= 2 * n) jump(slides[i]); // landed on a copy: swap to the real slide without a visible move
+      if (i !== cur) { mark(i); schedule(); } }, 120); }, { passive: true });
+  addEventListener('resize', function () { jump(slides[cur]); });
+  requestAnimationFrame(function () { jump(slides[0]); });
+  document.getElementById('car-prev').addEventListener('click', function () { go(cur - 1, true); });
+  document.getElementById('car-next').addEventListener('click', function () { go(cur + 1, true); });
+  var pp = document.getElementById('car-play'); pp.addEventListener('click', function () { playing = !playing; pp.setAttribute('aria-label', playing ? 'Pause autoplay' : 'Play autoplay'); restartBar(); schedule(); });
+  if (!playing) pp.setAttribute('aria-label', 'Play autoplay');
+  car.addEventListener('mouseenter', function () { hovering = true; schedule(); }); car.addEventListener('mouseleave', function () { hovering = false; restartBar(); schedule(); });
+  car.addEventListener('focusin', function () { hovering = true; schedule(); }); car.addEventListener('focusout', function () { hovering = false; schedule(); });
+  car.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); } else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); } });
+  new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) restartBar(); schedule(); }, { threshold: 0.45 }).observe(car);
+  document.addEventListener('visibilitychange', schedule); addEventListener('readerchange', schedule);
+  mark(0); }
 
 // ---------- approach ----------
-(function () { var S = [
+(function () { if (!document.getElementById('steps')) return; var S = [
     ['Start with a pain point', 'A real problem, mine or someone close to me, written down plainly before any solution.', 'Sedi', 'I kept losing notes and rewriting the same schedule, because my tasks, calendar and notes lived in tools that didn’t share anything.', 'img/lin-taskly.webp', 'Taskly, Aug 2024: where Sedi started'],
     ['Take out the unknowns', 'I brainstorm with Gemini and ask about everything I don’t know yet: technical limits, the stack, what’s even possible.', 'Let Her Cook', 'The kind of question I settle here: can a web app read a recipe link? Mostly no, because sites block it. So Let Her Cook asks you to paste the text instead, rather than routing links through a hidden server.', 'img/lhc-add.webp', 'Let Her Cook’s ways in, shaped by what a browser can and can’t read'],
     ['Sketch it or spec it', 'Unsure how it should feel? I sketch a low-fidelity prototype. Clear on it? I describe the vision, build and design to ChatGPT in detail and ask for a product requirements document.', 'Sedi', 'Sedi started as one sketched screen: the atom logo, a toolbar down the side, and the time in the middle. The layout still holds today.', 'sketch', 'Sedi’s first sketch'],
@@ -564,7 +696,7 @@ function buildWork() { var list = document.getElementById('cases'), wf = DotFiel
   pick(0); })();
 
 // ---------- principles ----------
-(function () { var D = [
+(function () { if (!document.getElementById('princ')) return; var D = [
     ['Simple first', 'Every screen does one job. Extras wait until you ask.', 'Sedi’s home shows three things: the time, what’s next, and what changed recently.'],
     ['Private by default', 'No account, no server. Nothing leaves the device unless you choose.', 'Let Her Cook reads photos and PDFs in the browser. Files are never uploaded, and only the recipe you approve is kept.'],
     ['Turn weak spots into delight', 'If something has to be slow, make the wait part of the experience.', 'Sedi’s private voice needs a one-time download, so dots drift around the orb and snap into a ring as it loads.'],
@@ -576,7 +708,7 @@ function buildWork() { var list = document.getElementById('cases'), wf = DotFiel
     b.addEventListener('click', function () { b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); }); g.appendChild(b); }); })();
 
 // ---------- index with hover previews ----------
-(function () { var R = [
+(function () { if (!document.getElementById('index-list')) return; var R = [
     ['Navoro', 'navoro', 'In-app help that points at the exact button and walks you through it. It runs inside Sedi.', 'https://nweinberg97.github.io/Navoro/', 'Live'],
     ['Search for the Good', 'search-for-the-good', 'A search engine for the people, products and projects making the world better.', 'https://nweinberg97.github.io/Search-for-the-Good/', 'Demo'],
     ['FORM', 'form', 'Helps physio patients do their home exercises, and shows their physio how it went.', 'https://nweinberg97.github.io/Form/', 'Demo'],
@@ -604,7 +736,7 @@ function tool(name, a, b, notes) { return '<article class="tool"><h4>' + name + 
   '<dl class="tool-notes"><div><dt>Started as</dt><dd>' + notes[0] + '</dd></div><div><dt>Kept</dt><dd>' + notes[1] + '</dd></div><div><dt>Changed</dt><dd>' + notes[2] + '</dd></div></dl></article>'; }
 var CASES = {
   sedi: function () { return [
-    ['overview', 'Overview', txt('Everything in its place.', ['Sedi merges four tools I designed and rebuilt over two years into one calm workspace for tasks, goals, calendar and notes. It runs in the browser, keeps everything on your device, and works offline. I use it every day.', 'Home is a living sky that follows the time of day, from dawn to a starry night, with the clock in a pane of glass and the three things that come next. The name comes from Hebrew <em>seder</em> (order) and Latin <em>sedēre</em> (to sit, to settle).']), pair(fig('img/sedi-home.webp', 'Sedi home in the morning: a glass clock on a blue sky and the next three things.', 'Morning.'), fig('img/sedi-night.webp', 'Sedi home at night: the same layout on a starry sky.', 'Night. The sky follows the time of day.'))],
+    ['overview', 'Overview', txt('Everything in its place.', ['Sedi merges four tools I designed and rebuilt over two years into one calm workspace for tasks, goals, calendar and notes. It runs in the browser, keeps everything on your device, and works offline. I use it every day.', 'Home is a living sky that follows the time of day, from dawn to a starry night, with the clock in a pane of glass and the three things that come next. The name comes from Hebrew <em>seder</em> (order) and Latin <em>sedēre</em> (to sit, to settle).']), '<figure style="margin:0"><div class="rvid"><video poster="img/sedi-demo-poster.webp" muted loop playsinline controls preload="metadata" aria-label="Screen recording of Sedi: adding a task, dragging it to In progress, opening the Universal Board, switching to the weekly view, and asking the assistant what is on today."><source src="img/sedi-demo.webm" type="video/webm"><source src="img/sedi-demo.mp4" type="video/mp4"></video></div><figcaption class="cap">Sedi in 35 seconds: add a task, drag it, plan the week, ask what’s on today.</figcaption></figure>', pair(fig('img/sedi-home.webp', 'Sedi home in the morning: a glass clock on a blue sky and the next three things.', 'Morning.'), fig('img/sedi-night.webp', 'Sedi home at night: the same layout on a starry sky.', 'Night. The sky follows the time of day.'))],
     ['problem', 'Problem', txt(null, ['I kept losing notes, rewriting the same schedule, and failing to connect information that lived in different apps. Every tool I tried was either too clunky or too complex for how I actually plan a day.', 'The moment it clicked: the same task lived in three places at once, as a board card, a calendar block and a note, and none of them agreed. I was spending more time keeping my tools in sync than doing the work.'])],
     ['sketch', 'From sketch', txt('It started as a clock.', ['The first sketch was one screen: a top bar with the atom logo, a toolbar down the right side, and the time in the middle. Everything else was added one tool at a time, only when I needed it.']), pair('<figure style="margin:0"><div class="rfig sketch-wrap"><svg class="sketch" id="sketch" viewBox="0 0 800 500" role="img" aria-label="A hand-drawn wireframe: a top bar with an atom logo and menu, a large clock in the middle with a small Next up list, a vertical toolbar of round buttons on the right, and an orb at the bottom."></svg></div><figcaption class="cap">The first sketch: logo, side toolbar, and the time in the middle.</figcaption></figure>', fig('img/sedi-home.webp', 'Sedi home today.', 'Sedi’s home today. The clock and the next-up list stayed; the tools now tuck away until you reach for them.'))],
     ['evolution', 'Evolution', txt('Seven versions, two years.', ['Each tool solved one part of the problem and made the gaps between them more obvious. LifeOS 6.0 put all four in one app on one card system. Six days later, 8.0 restructured navigation and the shared card. By the fall the merged code had grown in layers, so I rebuilt it from scratch as Sedi: one card system, one drag engine and one assistant. Tap through the versions.']),
@@ -631,15 +763,18 @@ var CASES = {
     ['outcome', 'Where it is', txt(null, ['Sedi is in daily use and has its own landing page. The launch build added the living-sky Home, the glass clock, smoother calendar drags, better on-device voice and in-app help. The web app stays free. Native Mac and iPhone apps with sync are in development, with a one-time lifetime price instead of a subscription. Next up: a public launch on Product Hunt.', 'What it taught me: fix the system before the features. Once everything was one card, most features got simpler to build, and easier to explain.']), fig('img/sedi-welcome.webp', 'Sedi’s landing page.', 'The landing page.')]
   ]; },
   nomnoms: function () { return [
-    ['overview', 'Overview', txt('A baby book that builds itself.', ['Parents take hundreds of photos and videos in the first year, but turning them into a baby book is a chore nobody gets to. I designed NomNoms for one real person, my sister, and changed it based on how she actually used it.', 'It has two clear outputs: Make the book (the printable book and its PDF) and Make the film (a short movie with music). Everything is stored on the device.']), fig('img/nn-share.webp', 'NomNoms export options: PDF book, digital book, memory film and backup.', 'One book, four ways to keep it.')],
-    ['solution', 'Solution', '<div class="txt"><ul class="bullets"><li>Add photos, videos, voice notes and milestones as they happen.</li><li>NomNoms sorts them into chapters, picks the best photos and lays out every page.</li><li>Read it, download a print-ready PDF, share a digital book, or play it as a short film.</li><li>The demo is a sample first year: 75 memories, 22 milestones, 9 little stories and 12 videos, which become an 85-page book in 13 chapters.</li></ul></div>', pair(fig('img/nn-book.webp', 'NomNoms book editor with the Style panel: colours, type and page shape.', 'Edit and style: five palettes, three type pairings, three page shapes.'), fig('img/nn-film.webp', 'NomNoms film settings: length, built-in soundtracks and the moments included.', 'The film: pick a length and a soundtrack, and choose which moments are in.'))],
+    ['overview', 'Overview', txt('A baby book that builds itself.', ['My sister is a busy new mom. She’d heard about parents making baby books and asked me, “Can you build me one?” She takes photos all the time but never gets around to organizing them.', 'So I built NomNoms for her. She records moments as they happen, sends them to family, and it turns them into a printable book or a short film. Everything stays on her device.']), fig('img/nn-share.webp', 'NomNoms export options: PDF book, digital book, memory film and backup.', 'One book, four ways to keep it.')],
+    ['grew', 'How it grew', txt('One user, one request at a time.', ['Every big feature started as something my sister asked for. I built it, she used it, and her next idea came from using it.']),
+      steps([['The first book', 'Photos and moments sorted into chapters and laid out automatically, with a short film alongside.'], ['Editable templates', 'She wanted to change pages after the book was made, so every page and template became editable.'], ['Themes', 'She asked for different looks for holidays and trips, so the book got themes.'], ['Baby Tales, in progress', 'Her idea: upload a photo, turn the baby into an animated character, and read him stories the book writes. The first characters didn’t feel right to her, so I’m designing new ones in the soft storybook style of the animated films she loves.']]),
+      pair(fig('img/nn-book.webp', 'NomNoms book editor with the Style panel: colours, type and page shape.', 'Editable pages and themes: five palettes, three type pairings, three page shapes.'), fig('img/nn-film.webp', 'NomNoms film settings: length, built-in soundtracks and the moments included.', 'The film: pick a length and a soundtrack, and choose which moments are in.'))],
+    ['solution', 'What it does', '<div class="txt"><ul class="bullets"><li>Add photos, videos, voice notes and milestones as they happen.</li><li>NomNoms sorts them into chapters, picks the best photos and lays out every page.</li><li>Read it, download a print-ready PDF, share a digital book, or play it as a short film.</li><li>The demo is a sample first year: 75 memories, 22 milestones, 9 little stories and 12 videos, which become an 85-page book in 13 chapters.</li></ul></div>'],
     ['decisions', 'Key decisions', decs([
       ['No blank pages', 'The book lays itself out as you add memories, so there’s never an empty template to fill in.', 'Less control up front, so every page can be edited, and automatic passes never overwrite a page you changed.'],
       ['Capture first, organize later', 'Adding a memory takes one step. Sorting into chapters happens automatically by date and milestone.', 'Automatic sorting can guess wrong, so every page can be swapped and re-ordered.'],
       ['Many ways out', 'PDF, digital book, film and a full backup, so the memories outlive the app.', 'Four export paths to build and maintain, but it removes the fear of being locked in.'],
       ['Protect the only copy', 'With no server, the device holds the only copy. Storage names never change, data migrations are versioned and reversible, media is never overwritten, and an upgrade test runs before every push.', 'No cloud yet. The backup format is designed to be the one-time import into a cloud database later, with the tables already mapped.']
     ])],
-    ['changed', 'What changed', txt(null, ['I watched my sister use it and changed what she tripped on.']), chg(['She ran into', 'I changed'], [['She wanted to adjust a layout after the book was made', 'Editable templates'], ['The film felt flat without sound', 'Music for the film'], ['A page picked the wrong photo', 'Swapping pictures on a page'], ['She wanted it on both her phone and laptop', 'Backup and restore: one file moves the whole book to another device']])]
+    ['next', 'What’s next', txt(null, ['Finish Baby Tales with characters she loves, then a printed hardcover through a print partner, so the story ends as a real book on her shelf.'])]
   ]; },
   lhc: function () { return [
     ['overview', 'Overview', txt('Every recipe has a home.', ['Recipes end up everywhere: a bookmarked site, a screenshot, a photo of Grandma’s card, a text from your sister. Let Her Cook takes a recipe however you have it, reads it on your device, and turns it into a draft you check before it’s saved. No account and no server.']), fig('img/lhc-home.webp', 'Let Her Cook home.', null, 1280, 800)],
@@ -711,12 +846,20 @@ function drawSketch(svg) { if (!svg) return; var seed = 7; function rnd() { seed
   svg.innerHTML = out; }
 buildWork();
 var lastFocus = null, readerKey = null;
-function openReader(k) {
-  var r = document.getElementById('reader'), p = P[k], secs = CASES[k](); readerKey = k; lastFocus = document.activeElement; r.innerHTML = '';
-  var bar = el('div', 'bar'), bin = el('div', 'in'); bar.appendChild(bin);
+function openReader(k, swap) {
+  var r = document.getElementById('reader'), p = P[k], secs = CASES[k](), wasOpen = !r.hidden; readerKey = k; if (!wasOpen) lastFocus = document.activeElement; r.innerHTML = ''; r.className = 'reader' + (wasOpen || swap ? ' swap' : '');
+  var scrim = el('div', 'scrim'); scrim.addEventListener('click', closeReader); r.appendChild(scrim); var sh = el('div', 'sheet'); r.appendChild(sh);
+  if (wasOpen || swap || reduce) r.classList.add('settled'); else sh.addEventListener('animationend', function () { r.classList.add('settled'); }, { once: true });
+  var bar = el('div', 'bar'), bin = el('div', 'in'); bar.appendChild(el('span', 'grab')); bar.appendChild(bin);
   var bi = el('img'); bi.src = p.icon; bi.alt = ''; bin.appendChild(bi); bin.appendChild(el('b', null, '')).textContent = p.name;
   var chap = el('nav', 'chap'); chap.setAttribute('aria-label', 'Chapters'); secs.forEach(function (s) { var a = el('a'); a.href = '#r-' + s[0]; a.textContent = s[1]; a.addEventListener('click', function (e) { e.preventDefault(); document.getElementById('r-' + s[0]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }); chap.appendChild(a); }); bin.appendChild(chap);
-  var close = el('button', 'btn ghost small close', 'Close ×'); close.type = 'button'; close.addEventListener('click', closeReader); bin.appendChild(close); r.appendChild(bar);
+  var ix = FEATURED.indexOf(k), pk = FEATURED[(ix - 1 + FEATURED.length) % FEATURED.length], nk0 = FEATURED[(ix + 1) % FEATURED.length], ra = el('div', 'racts');
+  ra.innerHTML = '<span class="rnav-pos">' + String(ix + 1).padStart(2, '0') + ' / ' + String(FEATURED.length).padStart(2, '0') + '</span>' +
+    '<button class="icon-btn prev" type="button" aria-label="Previous case study: ' + P[pk].name + '" title="' + P[pk].name + '"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+    '<button class="icon-btn next" type="button" aria-label="Next case study: ' + P[nk0].name + '" title="' + P[nk0].name + '"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>' +
+    '<a class="btn small try" href="' + p.link + '">Try ' + p.name + ' ↗</a>';
+  ra.querySelector('.prev').addEventListener('click', function () { openReader(pk, true); }); ra.querySelector('.next').addEventListener('click', function () { openReader(nk0, true); });
+  var close = el('button', 'btn ghost small close', 'Close ×'); close.type = 'button'; close.addEventListener('click', closeReader); ra.appendChild(close); bin.appendChild(ra); sh.appendChild(bar); dragClose(bar, sh, r, scrim);
   var body = el('div', 'rbody'), head = el('div', 'rhead');
   head.innerHTML = '<p class="eyebrow">Case study · ' + p.tag + '</p><h1 id="r-title"></h1><div class="facts"><div><span>Role</span>' + p.role + '</div><div><span>When</span>' + p.time + '</div><div><span>Built with</span>' + p.stack + '</div><div><span>Try it</span><a href="' + p.link + '">Open ↗</a></div></div>';
   head.querySelector('h1').textContent = p.pitch; body.appendChild(head);
@@ -724,12 +867,37 @@ function openReader(k) {
     var col = el('div'); col.style.display = 'grid'; col.style.gap = '24px'; for (var i = 2; i < s.length; i++) col.insertAdjacentHTML('beforeend', s[i]); sec.appendChild(col); body.appendChild(sec); });
   var nk = FEATURED[(FEATURED.indexOf(k) + 1) % FEATURED.length], nx = el('div', 'rnext');
   nx.innerHTML = '<a class="btn ghost" href="' + p.link + '">Try ' + p.name + ' ↗</a>'; var nb = el('button'); nb.type = 'button'; nb.innerHTML = '<small>Next case study</small><b></b>'; nb.querySelector('b').textContent = P[nk].name + ' →';
-  nb.addEventListener('click', function () { openReader(nk); r.scrollTop = 0; }); nx.appendChild(nb); body.appendChild(nx); r.appendChild(body);
-  r.hidden = false; document.body.style.overflow = 'hidden'; r.scrollTop = 0; close.focus();
+  nb.addEventListener('click', function () { openReader(nk, true); }); nx.appendChild(nb); body.appendChild(nx); sh.appendChild(body);
+  r.hidden = false; document.body.style.overflow = 'hidden'; sh.scrollTop = 0; var pg = document.getElementById('page'); if (pg && !wasOpen) pg.style.transformOrigin = '50% ' + (scrollY + innerHeight * 0.1) + 'px'; document.documentElement.classList.add('sheet-open'); close.focus(); dispatchEvent(new Event('readerchange'));
+  if (k === 'sedi') { var v = sh.querySelector('video'); if (v) v.play().catch(function () {}); }
   if (k === 'sedi') { wireSedi(); buildPrinc(document.getElementById('r-princ'), SEDI_P); drawSketch(document.getElementById('sketch')); }
 }
-function closeReader() { var r = document.getElementById('reader'); r.hidden = true; document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
-addEventListener('keydown', function (e) { if (e.key === 'Escape' && !document.getElementById('reader').hidden) closeReader(); });
+function closeReader() { var r = document.getElementById('reader'); if (r.hidden || r.classList.contains('closing')) return; r.classList.add('closing'); document.documentElement.classList.remove('sheet-open');
+  setTimeout(function () { r.hidden = true; r.classList.remove('closing'); r.innerHTML = ''; document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); dispatchEvent(new Event('readerchange')); }, reduce ? 0 : 380); }
+function dragClose(handle, sheet, r, scrim) { var y0 = null, dy = 0, t0 = 0, lastY = 0, lastT = 0;
+  function begin(y) { y0 = y; dy = 0; t0 = lastT = performance.now(); lastY = y; r.classList.add('dragging', 'settled'); }
+  function move(y) { dy = Math.max(0, y - y0); sheet.style.transform = 'translateY(' + dy + 'px)'; if (scrim) scrim.style.opacity = String(Math.max(0, 1 - dy / 500)); lastT = performance.now(); lastY = y; }
+  function end() { if (y0 === null) return; var v = dy / Math.max(1, performance.now() - t0); y0 = null; r.classList.remove('dragging');
+    if (dy > 120 || (v > 0.5 && dy > 40)) { closeReader(); return; }
+    sheet.style.transition = 'transform .35s cubic-bezier(.32,.72,0,1)'; sheet.style.transform = ''; if (scrim) scrim.style.opacity = '';
+    setTimeout(function () { sheet.style.transition = ''; }, 360); }
+  // the handle bar always drags, wherever you've scrolled to
+  handle.addEventListener('pointerdown', function (e) { if (e.button || e.target.closest('button, a')) return; begin(e.clientY); handle.setPointerCapture(e.pointerId); });
+  handle.addEventListener('pointermove', function (e) { if (y0 !== null) move(e.clientY); });
+  handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+  // on touch screens, pulling down from the top of the content also closes it
+  var ty = null, pulling = false;
+  sheet.addEventListener('touchstart', function (e) { if (e.target.closest('.bar')) return; ty = sheet.scrollTop <= 0 ? e.touches[0].clientY : null; pulling = false; }, { passive: true });
+  sheet.addEventListener('touchmove', function (e) { if (ty === null) return; var d = e.touches[0].clientY - ty;
+    if (!pulling && d > 6 && sheet.scrollTop <= 0) { pulling = true; begin(ty); }
+    if (pulling) { e.preventDefault(); move(e.touches[0].clientY); } }, { passive: false });
+  sheet.addEventListener('touchend', function () { if (pulling) end(); ty = null; pulling = false; }); }
+// click to zoom any screenshot inside a case study
+function openZoom(img) { var z = el('div', 'zoom'); z.setAttribute('role', 'dialog'); z.setAttribute('aria-label', 'Zoomed image'); var big = el('img'); big.src = img.currentSrc || img.src; big.alt = img.alt; z.appendChild(big);
+  var cap = img.closest('figure') && img.closest('figure').querySelector('figcaption'); if (cap) { var p = el('p'); p.textContent = cap.textContent; z.appendChild(p); }
+  z.tabIndex = -1; z.addEventListener('click', function () { z.remove(); }); document.body.appendChild(z); z.focus(); }
+document.addEventListener('click', function (e) { var img = e.target.closest('.sheet .rfig > img'); if (img) openZoom(img); });
+addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; var z = document.querySelector('.zoom'); if (z) { z.remove(); return; } if (!document.getElementById('reader').hidden) closeReader(); });
 function wireSedi() {
   var V = [['Aug 2024', 'Taskly', 'A Trello-style board with five columns. Drag a task to the trash to delete it.', 'img/lin-taskly.webp'], ['May 2026', 'Boardly', 'A board for each part of life, with goals, tasks and notes placed anywhere.', 'img/lin-boardly.webp'],
     ['Jun 2026', 'Timely', 'Scheduling and planning. The Universal Board first showed up here.', 'img/lin-timely.webp'], ['Jun 2026', 'Brainly', 'A canvas for notes and links, with dictation and an early assistant.', 'img/lin-brainly.webp'],
@@ -742,6 +910,22 @@ function wireSedi() {
   var ba = document.getElementById('ba'), rg = document.getElementById('ba-range'); function set() { ba.style.setProperty('--x', rg.value + '%'); } rg.addEventListener('input', set); set();
 }
 if (/^#case-/.test(location.hash) && CASES[location.hash.slice(6)]) setTimeout(function () { openReader(location.hash.slice(6)); }, 50);
+
+// ---------- fun mode switch: a burst of project balls, then the games ----------
+(function () { var sw = document.getElementById('funswitch'); if (!sw) return; window.__funBurst = true;
+  sw.addEventListener('click', function (e) { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); if (sw.getAttribute('aria-checked') === 'true') return;
+    sw.setAttribute('aria-checked', 'true'); var href = sw.getAttribute('href');
+    if (reduce) { location.href = href; return; }
+    var r = sw.querySelector('.fs-track').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var cols = ['#59B2EC', '#C98A6B', '#FF7A3D', '#FF5A1F', '#F9A871'];
+    for (var i = 0; i < 26; i++) { var b = document.createElement('span'), k = ORDER[i % ORDER.length]; b.className = 'fs-ball';
+      if (i < ORDER.length) { b.style.backgroundImage = 'url(' + P[k].icon + ')'; b.style.borderRadius = '8px'; b.style.width = b.style.height = '34px'; } else b.style.background = cols[i % cols.length];
+      b.style.left = (cx - 13) + 'px'; b.style.top = (cy - 13) + 'px'; document.body.appendChild(b);
+      var a = Math.random() * Math.PI * 2, v = 160 + Math.random() * 380, dx = Math.cos(a) * v, dy = Math.sin(a) * v - 220;
+      b.animate([{ transform: 'translate(0,0) scale(.4) rotate(0)', opacity: 1 }, { transform: 'translate(' + dx * .6 + 'px,' + (dy * .6) + 'px) scale(1.1) rotate(' + (a * 200) + 'deg)', opacity: 1, offset: .45 }, { opacity: 1, offset: .75 }, { transform: 'translate(' + dx + 'px,' + (dy + 520) + 'px) scale(.9) rotate(' + (a * 420) + 'deg)', opacity: 0 }],
+        { duration: 1100 + Math.random() * 400, easing: 'cubic-bezier(.2,.7,.4,1)', fill: 'forwards' }); }
+    if (window.heroDots) window.heroDots.burst();
+    setTimeout(function () { location.href = href; }, 950); }); })();
 </script>
 </body>
 </html>
